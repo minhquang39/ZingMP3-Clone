@@ -65,7 +65,7 @@ html {
     display: flex;
     align-items: center;
     /* padding: 0 21px; */
-    padding: 20px 25px 20px 28px;
+    padding: 0 25px 0 28px;
 }
 
 .zm_logo {
@@ -80,9 +80,9 @@ html {
     height: 40px;
 }
 
-.zm_navbar_wrapper {}
+/* .zm_navbar_wrapper {}
 
-.zm_navbar_main {}
+.zm_navbar_main {} */
 
 .zm_navbar_main .zm_navbar_menu {
     list-style-type: none;
@@ -97,6 +97,7 @@ html {
 .navbar_play_icon {
     font-size: 20px;
     display: none;
+    /* appearance: none; */
     position: absolute;
     right: 10%;
 }
@@ -129,7 +130,7 @@ html {
 
 .zm_navbar_main .zm_navbar_menu .zm_navbar_item a span {
     display: block;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 550;
     line-height: 20px;
     margin-left: 12px;
@@ -143,6 +144,10 @@ html {
     margin-left: 7px;
 }
 
+.zm_navbar_main.overflow {
+    overflow: hidden;
+}
+
 .zm_navbar_seperate {
     height: 1px;
     background-color: var(--border-primary);
@@ -152,7 +157,7 @@ html {
 .zm_navbar_login {
     padding: 14px 12px;
     background-color: var(--purple-primary);
-    font-size: 14px;
+    font-size: 12px;
     color: #fff;
     font-weight: 600;
     text-align: center;
@@ -160,7 +165,7 @@ html {
     margin: 15px 20px 10px;
 }
 
-.zm_navbar_login span {}
+/* .zm_navbar_login span {} */
 
 .zm_navbar_login button {
     padding: 6px 44px;
@@ -208,7 +213,7 @@ html {
 
 .zm_navbar_playlist button span {
     /* color: #dadada; */
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
 }
 
@@ -220,7 +225,7 @@ html {
 
 /* Header  */
 #zm_header {
-    padding: 40px 59px;
+    padding: 35px 59px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -233,7 +238,7 @@ html {
 }
 
 .zm_header_left .header_arrow {
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .ti-arrow-left {
@@ -245,7 +250,7 @@ html {
 }
 
 .ti-search {
-    font-size: 24px;
+    font-size: 20px;
     position: absolute;
     top: 50%;
     left: 3%;
@@ -255,8 +260,8 @@ html {
 
 .header_search {
     border-radius: 20px;
-    min-width: 500px;
-    min-height: 45px;
+    min-width: 450px;
+    min-height: 40px;
     background-color: var(--alpha-bg);
     position: relative;
     display: flex;
@@ -358,14 +363,14 @@ html {
 }
 
 .zm_header_right.download_app button i {
-    font-size: 24px;
+    font-size: 20px;
     color: #c273ed;
     display: block;
     margin-right: 4px;
 }
 
 .zm_header_right.download_app button span {
-    font-size: 16px;
+    font-size: 14px;
     color: #c273ed;
     font-weight: 600;
 }
@@ -382,9 +387,9 @@ html {
     position: relative;
 }
 
-.header_setting:hover .header_see_more {
+/* .header_setting:hover .header_see_more {
     display: flex;
-}
+} */
 
 .header_see_more {
     display: none;
@@ -395,7 +400,7 @@ html {
     height: 26px;
     font-size: 13px;
     border-radius: 4px;
-    /* text-align: center; */
+    text-align: center;
     /* display: flex; */
     align-items: center;
     justify-content: center;
@@ -406,6 +411,7 @@ html {
     content: "";
     position: absolute;
     bottom: 26px;
+    left: 18px;
     border-style: solid;
     border-width: 10px;
     border-color: transparent transparent #2f2739 transparent;
@@ -426,10 +432,281 @@ html {
     font-size: 18px;
 }
 
-.header_setting:hover i {
+.header_setting:hover .header_setting_icon {
     color: #dadada;
 }
 
+.header_dropdown {
+    width: 300px;
+    position: absolute;
+    top: calc(50% + 28px);
+    right: 0;
+    background-color: var(--primary-bg);
+    border-radius: 12px;
+    padding: 6px;
+    display: none;
+}
+
+.header_dropdown_list {
+    list-style-type: none;
+}
+
+.header_dropdown_item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 10px;
+    position: relative;
+    border-radius: 4px;
+}
+
+.header_dropdown_item:hover {
+    background-color: var(--alpha-bg);
+}
+
+.header_dropdown_item:nth-child(3),
+.header_dropdown_item:nth-child(4),
+.header_dropdown_item:nth-child(5),
+.header_dropdown_item:nth-child(6),
+.header_dropdown_item:nth-child(7),
+.header_dropdown_item:nth-child(8) {
+    color: #dadada;
+}
+
+.header_dropdown_item:nth-child(3) :hover,
+.header_dropdown_item:nth-child(4) :hover,
+.header_dropdown_item:nth-child(5) :hover,
+.header_dropdown_item:nth-child(6) :hover,
+.header_dropdown_item:nth-child(7) :hover,
+.header_dropdown_item:nth-child(8) :hover {
+    color: #fff;
+}
+
+/* border-bottom: 1px solid var(--border-primary); */
+
+
+.header_dropdown_item_left {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-evenly; */
+    position: relative;
+}
+
+.header_dropdown_item_left i {
+    margin-right: 10px;
+}
+
+.header_dropdown_item_left .header_dropdown_function {
+    font-size: 14px;
+}
+
+.header_dropdown_item_right {}
+
+.header_dropdown_devide {
+    height: 1px;
+    width: 90%;
+    margin: 0 10px;
+    background-color: var(--border-primary);
+    /* background-color: #fff; */
+    position: absolute;
+    bottom: 290px;
+    /* left: 0; */
+    z-index: 1;
+}
+
+.header_dropdown_item:hover .header_dropdown_music {
+    /* display: block; */
+}
+
+
+#modal_header_music {
+    position: fixed;
+    top: 10%;
+    left: 46%;
+    display: none;
+}
+
+.header_dropdown_music {
+    /* display: none; */
+    min-width: 360px;
+    height: 100%;
+    background-color: var(--primary-bg);
+    padding: 16px;
+    border-radius: 16px;
+}
+
+.header_dropdown_head {
+    margin-bottom: 18px;
+}
+
+.header_dropdown_move_song {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.header_dropdown_class {
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 600;
+    background-color: #9b4de0;
+    display: inline-block;
+    padding: 0 4px;
+    border-radius: 4px;
+}
+
+.header_dropdown_class.dropdown_quality {
+    position: absolute;
+    left: 22%;
+    top: 20%;
+}
+
+.header_dropdown_transfer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header_dropdown_transfer span {
+    color: #dadada;
+}
+
+.header_dropdown_transfer:hover span {
+    color: #fff;
+}
+
+.header_dropdown_range {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.header_dropdown_value {
+    display: block;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.header_dropdown_remove_silient {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.dropdown_transfer_smooth {
+    display: flex;
+}
+
+.transfer_smooth {
+    display: block;
+    width: 32px;
+    height: 18px;
+    background-color: #ccc;
+    border-radius: 20px;
+    position: relative;
+}
+
+.transfer_smooth::before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background-color: #fff;
+    position: absolute;
+    /* top: 5%;
+    left: 5%; */
+    border-radius: 50%;
+    margin: 1px;
+    transition: transform 0.3s ease;
+}
+
+
+#transfer1:checked+.transfer_smooth,
+#transfer2:checked+.transfer_smooth,
+#transfer3:checked+.transfer_smooth {
+    background-color: #9b4de0;
+}
+
+.transfer-checkbox:checked+.transfer_smooth::before {
+    transform: translateX(100%);
+}
+
+#transfer1,
+#transfer2,
+#transfer3 {
+    display: none;
+}
+
+.header_dropdown_quality {
+    list-style: none;
+}
+
+.header_dropdown_quality_class,
+.header_dropdown_play {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.header_dropdown_quality_item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    margin: 15px 0;
+    position: relative;
+}
+
+.header_dropdown_quality_item:hover label {
+    color: #9b4de0;
+    cursor: pointer;
+}
+
+
+.header_dropdown_music .header_dropdown_divided {
+    height: 1px;
+    width: 100%;
+    background-color: var(--border-primary);
+    margin: 20px 0;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #ddd;
+    margin-top: -4px;
+}
+
+input[type="radio"] {
+    width: 18px;
+    /* Độ rộng của ô radio */
+    height: 18px;
+    /* Chiều cao của ô radio */
+    margin-right: 10px;
+    /* Khoảng cách giữa ô radio và nhãn */
+    outline: #34224f;
+}
+
+
+/* input[type=range]:focus {
+    outline: none;
+} */
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+}
+
+
+/* Header account  */
 .header_account {
     width: 40px;
     height: 40px;
@@ -438,13 +715,12 @@ html {
     position: relative;
 }
 
-.header_account:hover {
+/* .header_account:hover {
     /* filter: brightness(0.9); */
-}
-
+/* } */
 .header_account .header_login {
-    width: 100%;
-    height: 100%;
+    /* width: 100%; */
+    /* height: 100%; */
     border-radius: 50%;
     background-color: transparent;
     border: none;
@@ -457,22 +733,43 @@ html {
 .header_account_infomation {
     display: none;
     position: absolute;
-    min-width: 320px;
+    min-width: 300px;
+    height: 350px;
+    overflow-y: scroll;
     top: calc(50% + 28px);
     right: 0;
     background-color: #34224f;
     padding: 16px;
-    border-radius: 16px;
+    border-radius: 10px;
 }
+
+
+.header_account_infomation::-webkit-scrollbar {
+    width: 2px;
+    /* Width of the scrollbar */
+}
+
+.header_account_infomation::-webkit-scrollbar-track {
+    background: var(--border-primary);
+    /* Color of the track */
+}
+
+.header_account_infomation::-webkit-scrollbar-thumb {
+    /* Color of the scrollbar handle */
+    /* border-radius: 5px; */
+    /* Rounded corners */
+}
+
 
 .header_account_infomation .header_login {
     padding: 12px 0;
     background-color: #9b4de0;
     border-radius: 20px;
-    font-size: 17px;
+    font-size: 14px;
     font-weight: 600;
     color: #fff;
     margin-bottom: 16px;
+    width: 100%;
 }
 
 .header_succscribe {
@@ -493,7 +790,7 @@ html {
 
 .header_subscription {
     /* padding: 12 0px; */
-    padding: 12px 20px;
+    padding: 10px 20px;
     border-radius: 12px;
     margin-top: 12px;
 }
@@ -504,21 +801,23 @@ html {
 }
 
 .header_subscription_name {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 700;
 }
 
 .header_subscription_class {
-    padding: 0px 8px;
+    padding: 0px 7px;
     text-transform: uppercase;
     font-weight: 700;
     border-radius: 4px;
     margin-left: 8px;
+    font-size: 14px;
+    letter-spacing: .04cm;
 }
 
 .header_subscription_price {
-    font-weight: 500;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 15px;
     display: block;
 }
 
