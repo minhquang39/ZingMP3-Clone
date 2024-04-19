@@ -1,0 +1,11 @@
+{
+  "folders": [
+	{
+		"name": "Zingmp3",
+		"path": "."
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "Zingmp3"
+  }
+}

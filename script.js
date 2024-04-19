@@ -163,4 +163,12 @@ gallery.onmouseout = function () {
   gallery_prev.style.display = "none";
   gallery_next.style.display = "none";
 };
+const navbarMain = document.querySelector(".zm_navbar_main.overflow");
 
+navbarMain.addEventListener("mouseover", function () {
+  this.style.overflowY = "scroll";
+});
+
+navbarMain.addEventListener("mouseout", function () {
+  this.style.overflowY = "hidden";
+});

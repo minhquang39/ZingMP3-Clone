@@ -144,8 +144,16 @@ html {
 }
 
 .zm_navbar_main.overflow {
-    overflow: hidden;
+    height: 200px;
+    overflow-y: scroll;
 }
+
+.zm_navbar_main.overflow::-webkit-scrollbar {
+    width: 4px;
+    background-color: #817692;
+    /* display: none; */
+}
+
 
 .zm_navbar_seperate {
     height: 1px;
@@ -167,13 +175,14 @@ html {
 /* .zm_navbar_login span {} */
 
 .zm_navbar_login button {
-    padding: 6px 44px;
+    padding: 6px 24px;
     background-color: #a55fe3;
     outline: none;
     border-radius: 24px;
     border: 1px solid white;
-    margin-top: 10px;
     cursor: pointer;
+    display: block;
+    margin: 10px auto 0;
 }
 
 .zm_navbar_login button span {
@@ -185,7 +194,7 @@ html {
 }
 
 .zm_navbar_playlist {
-    /* padding: 12px 21px; */
+    padding: 12px 21px;
     width: 100%;
     position: absolute;
     bottom: 0;
@@ -195,7 +204,7 @@ html {
 
 .zm_navbar_playlist button {
     width: 100%;
-    padding: 12px 21px;
+    /* padding: 12px 21px; */
     background: var(--sidebar-bg);
     display: flex;
     align-items: center;
@@ -876,7 +885,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 #zing_body {
     height: 100%;
     width: 100%;
-    padding: 0px 59px;
+    /* padding: 0px 59px; */
     /* background-color: orange; */
 }
 
@@ -1094,7 +1103,8 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .overlay {
-    height: 40px;
+    /* height: 40px; */
+    height: 100%;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -1232,4 +1242,102 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .song_rank {
     font-size: 12px;
     color: #fff;
+}
+
+/* Zing top  */
+.zing_top {}
+
+.zing_top_main {
+    max-height: 400px;
+    overflow-y: scroll;
+    padding: 0 60px;
+}
+
+.zing_top_main::-webkit-scrollbar {
+    width: 2px;
+}
+
+.zing_top_100 {
+    margin-top: 20px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.zing_section {
+    margin-bottom: 50px;
+}
+
+.zing_section_header {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.zm__card_content_title {
+    font-size: 13px;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+    max-width: 200px;
+    /* Đặt độ rộng tùy ý */
+    /* Ẩn phần vượt quá giới hạn */
+    overflow: hidden;
+    /* Hiển thị dấu ba chấm (...) khi văn bản bị cắt ngắn */
+    text-overflow: ellipsis;
+    /* Chỉ hiển thị trên một dòng */
+    white-space: nowrap;
+
+}
+
+.zm__card_content_sub_title {
+    font-size: 12px;
+    color: #ffffff80;
+    font-weight: 300;
+}
+
+.zing_top .zing_section .zm_carousel_item .zm__card_content_title:hover {
+    color: #9b4de0;
+    cursor: pointer;
+}
+
+.zing_top .zing_section .zm_carousel_item .zm__card_content_sub_title a:hover {
+    color: #9b4de0;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.zing_top .zing_section .zm_carousel_item {
+    margin-bottom: 30px;
+}
+
+
+.zing_top .zing_section .zm_carousel_item .playlist_sub_menu {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 20%;
+}
+
+.zing_top .zing_section .zm_carousel_item .zm_card {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.zing_top .zing_section .zm_carousel_item .zm_card:hover .playlist_sub_menu {
+    display: flex;
+}
+
+.zing_top .zing_section .zm_carousel_item .zm_card:hover .playlist_img {
+    scale: 1.1;
+    transition: scale .7s;
+    cursor: pointer;
+}
+
+.zing_top .zing_section .zm_carousel_item .zm_card:hover .overlay {
+    display: block;
+}
+
+
+.has_sub_menu.playlist_play i {
+    font-size: 36px;
 }
