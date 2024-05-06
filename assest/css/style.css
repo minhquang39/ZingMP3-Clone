@@ -127,10 +127,15 @@ html {
     align-items: center;
 }
 
+.zm_navbar_main .zm_navbar_menu .zm_navbar_item a svg {
+    width: 24px;
+    height: 24px;
+}
+
 .zm_navbar_main .zm_navbar_menu .zm_navbar_item a span {
     display: block;
     font-size: 14px;
-    font-weight: 550;
+    font-weight: 400;
     line-height: 20px;
     margin-left: 12px;
 }
@@ -144,7 +149,7 @@ html {
 }
 
 .zm_navbar_main.overflow {
-    height: 200px;
+    height: 250px;
     overflow-y: scroll;
 }
 
@@ -205,7 +210,7 @@ html {
 .zm_navbar_playlist button {
     width: 100%;
     /* padding: 12px 21px; */
-    background: var(--sidebar-bg);
+    background-color: var(--sidebar-bg);
     display: flex;
     align-items: center;
     outline: none;
@@ -311,7 +316,7 @@ html {
     width: 100%;
     border-radius: 0 0 20px 20px;
     display: none;
-    z-index: -10;
+    z-index: 9999;
 }
 
 .header_search_history span {
@@ -996,8 +1001,10 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .zing_new_container {
-    height: 500px;
+    max-height: 600px;
     overflow-y: scroll;
+    /* padding-left: 60px; */
+    padding: 0 60px;
 }
 
 .zing_new_container::-webkit-scrollbar {
@@ -1248,7 +1255,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .zing_top {}
 
 .zing_top_main {
-    max-height: 400px;
+    max-height: 600px;
     overflow-y: scroll;
     padding: 0 60px;
 }
@@ -1265,7 +1272,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .zing_section {
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
 }
 
 .zing_section_header {
@@ -1276,7 +1283,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .zm__card_content_title {
     font-size: 13px;
     color: var(--text-primary);
-    margin-bottom: 5px;
+    margin: 5px 0;
     max-width: 200px;
     /* Đặt độ rộng tùy ý */
     /* Ẩn phần vượt quá giới hạn */
@@ -1294,11 +1301,13 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     font-weight: 300;
 }
 
+.zing_topic .zm_carousel_item .zm__card_content_title:hover,
 .zing_top .zing_section .zm_carousel_item .zm__card_content_title:hover {
     color: #9b4de0;
     cursor: pointer;
 }
 
+.zing_topic .zm_carousel_item .zm__card_content_sub_title a:hover,
 .zing_top .zing_section .zm_carousel_item .zm__card_content_sub_title a:hover {
     color: #9b4de0;
     text-decoration: underline;
@@ -1309,30 +1318,43 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     margin-bottom: 30px;
 }
 
-
+.zing_topic .zm_carousel_item .playlist_sub_menu,
 .zing_top .zing_section .zm_carousel_item .playlist_sub_menu {
     display: none;
     position: absolute;
     top: 50%;
-    left: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+.zing_topic .zm_carousel_item .zm_card,
 .zing_top .zing_section .zm_carousel_item .zm_card {
     overflow: hidden;
     position: relative;
     cursor: pointer;
+    border-radius: 5px;
 }
 
+.zing_topic .zm_carousel_item .zm_card:hover .playlist_sub_menu,
 .zing_top .zing_section .zm_carousel_item .zm_card:hover .playlist_sub_menu {
     display: flex;
 }
 
+.playlist_img {
+    padding-top: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.zing_topic .zm_carousel_item .zm_card:hover .playlist_img,
 .zing_top .zing_section .zm_carousel_item .zm_card:hover .playlist_img {
     scale: 1.1;
     transition: scale .7s;
     cursor: pointer;
 }
 
+.zing_topic .zm_carousel_item .zm_card:hover .overlay,
 .zing_top .zing_section .zm_carousel_item .zm_card:hover .overlay {
     display: block;
 }
@@ -1340,4 +1362,158 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .has_sub_menu.playlist_play i {
     font-size: 36px;
+}
+
+/* Zing topic  */
+.zing_topic {}
+
+.zing_topic_main {
+    padding: 0 60px;
+    /* max-height: 200px; */
+    height: 500px;
+    overflow-y: scroll;
+    /* padding-bottom: 500px; */
+    scroll-behavior: smooth;
+}
+
+.zing_topic_main::-webkit-scrollbar {
+    /* background-color: transparent; */
+    width: 4px;
+    background-color: #ccc;
+}
+
+.zing_topic_chill {
+    background-image: url(../image/category/chill.jpg);
+    padding-bottom: 29.1%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.zm_collabed_info {
+    padding-top: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: relative;
+}
+
+.__playlist {
+    padding-top: 56% !important;
+}
+
+.zm_collabed_playlist {
+    margin-bottom: 30px;
+}
+
+.collabed_playlist_wrapper {
+    position: relative;
+}
+
+.playlist_zm_card {
+    overflow: hidden;
+    border-radius: 10px;
+    height: 100%;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    position: relative;
+}
+
+.playlist_zm_card:hover .zm_collabed_info {
+    scale: 1.1;
+    transition: scale .7s;
+    cursor: pointer;
+}
+
+.zm_collabed_info {}
+
+.zm_collabed_title {
+    position: absolute;
+    top: 50%;
+    /* left: 50%; */
+    /* transform: translate(-50%); */
+    transform: translateY(-50%);
+    text-align: center;
+    width: 100%;
+    font-size: 25px;
+}
+
+.zm_section_title {
+    margin-bottom: 20px;
+}
+
+.zing_topic_readmore {
+    margin: 0 auto;
+    padding: 9px 24px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    display: block;
+}
+
+.zing_topic_readmore a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 12px;
+}
+
+.thumb_images {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    left: 5%;
+}
+
+.thumb_image {
+    padding-top: 30%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 20%;
+    margin-right: 5px;
+    border-radius: 4px;
+}
+
+.special_playlist .zm_collabed_title {
+    top: 40%;
+    left: 5%;
+    font-size: 18px;
+    width: auto;
+    text-align: left;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    /* Căn giữa theo chiều ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    width: 100%;
+    /* Đảm bảo div lấp đầy chiều rộng */
+    margin-bottom: 20px;
+}
+
+.normal_playlist_header {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.normal_playlist_others {
+    font-size: 14px;
+    color: #ffffff80;
+}
+
+.normal_playlist_others:hover {
+    color: #9b4de0;
+    cursor: pointer;
+}
+
+.zm_normal_playlist {
+    margin-bottom: 30px;
 }

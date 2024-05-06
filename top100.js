@@ -249,7 +249,6 @@ const top100 = [
 const zing_sections = Array.from($$(".zing_section"));
 const zing_section_mains = Array.from($$(".zing_section_main"));
 const zing_headers = Array.from($$(".zing_section_header"));
-console.log(zing_sections, zing_section_mains);
 
 top100.forEach((category, index) => {
   zing_headers[index].innerHTML = `${category.header}`;
@@ -258,9 +257,9 @@ top100.forEach((category, index) => {
           <div class="zm_carousel_item col c-3">
               <div class="playlist_wrapper">
                     <div class="zm_card">
-                        <img src="${
-                          playlist.image
-                        }" alt="" class="playlist_img" widht="210px" height="210px">
+                           <div class="playlist_img" style="background-image: url(${
+                             playlist.image
+                           });"></div>
                         <div class="overlay"></div>
 
                             <div class="playlist_sub_menu">
