@@ -1,6 +1,5 @@
 const $$ = document.querySelectorAll.bind(document);
 const $ = document.querySelector.bind(document);
-
 var isShowingInfomation = false;
 
 //Xử lý sự kiện ở ô input
@@ -44,7 +43,7 @@ header_setting_icon.onmouseout = function () {
 };
 
 header_dropdown.onmouseover = function (e) {
-  e.stopProganation();
+  // e.stopProganation();
   header_seemore.style.display = "none";
 };
 
@@ -171,4 +170,30 @@ navbarMain.addEventListener("mouseover", function () {
 
 navbarMain.addEventListener("mouseout", function () {
   this.style.overflowY = "hidden";
+});
+
+// Multiple tab library
+const menuLibrarys = Array.from($$(".zm_library_item"));
+const itemLibrarys = Array.from($$(".zm_library_tab"));
+
+menuLibrarys.forEach((menuLibrary, index) => {
+  menuLibrary.onclick = function () {
+    $(".zm_library_item.is-active").classList.remove("is-active");
+    menuLibrary.classList.add("is-active");
+
+    $(".zm_library_tab.is-active").classList.remove("is-active");
+    itemLibrarys[index].classList.add("is-active");
+  };
+});
+
+const items = Array.from($$(".item"));
+const actionTabs = Array.from($$(".zm_sub_empty"));
+items.forEach((item, index) => {
+  item.onclick = function () {
+    $(".item.is-active").classList.remove("is-active");
+    item.classList.add("is-active");
+
+    $(".zm_sub_empty.is-active").classList.remove("is-active");
+    actionTabs[index].classList.add("is-active");
+  };
 });
