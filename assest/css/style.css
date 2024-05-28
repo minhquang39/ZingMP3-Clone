@@ -53,14 +53,14 @@ html {
     height: 100%;
     background-color: var(--sidebar-bg);
     position: relative;
-    margin-bottom: 90px;
+    /* margin-bottom: 90px; */
 
 }
 
 .sidebar_right {
     width: 81%;
     height: 100%;
-    margin-bottom: 90px;
+    /* margin-bottom: 90px; */
 }
 
 .zm_brand {
@@ -2118,6 +2118,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     margin-right: 10px;
     border-radius: 5px;
     object-fit: cover;
+    border-radius: 50%;
 }
 
 .player_media_content {
@@ -2245,4 +2246,9 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .sub_menu.playlist::before {
     left: 85%;
+}
+
+.action-repeat.is-active,
+.action-random.is-active {
+    color: #9b4de0;
 }

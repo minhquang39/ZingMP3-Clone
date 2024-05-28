@@ -27,6 +27,8 @@ const zingDiscovers = Array.from($$(".zm_discover_section"));
 const zingDiscoverHeaders = Array.from($$(".discover_playlist_header"));
 const zingDiscoverWrappers = Array.from($$(".zm_discover_list"));
 
+const songList = $(".discover_playlist");
+
 // Audio
 const audio = $("#audio");
 const playBtn = $(".action-play");
@@ -39,10 +41,21 @@ const songArtist = $(".song_subtitle_item");
 
 const volume = $("#volume");
 const volumeBtn = $(".volume-btn");
+
+const progress = $("#progress");
+
+const repeatBtn = $(".action-repeat");
+const randomBtn = $(".action-random");
+
+const timeRight = $(".time_right");
+const timeLeft = $(".time_left");
 const app = {
   currentIndex: 0,
   isPlaying: false,
-  isVolume: true,
+  isVolume: false,
+  isRepeat: false,
+  isRandom: false,
+  randomSong: [0],
 
   newSongs: JSON.parse(localStorage.getItem(RANK_STORAGE)),
   top100s: JSON.parse(localStorage.getItem(top100_STORAGE)),
@@ -377,10 +390,10 @@ const app = {
   },
 
   renderSong: function () {
-    this.songs.forEach((song) => {
+    this.songs.forEach((song, index) => {
       discover.innerHTML += `
      <div class="col c-4 l-4 m-4">
-                                        <div class="media">
+                                        <div class="media" data-index="${index}">
                                             <div class="media_left">
                                                 <div class="song_thumb">
                                                     <img src="${song.image}" alt=""
@@ -398,7 +411,7 @@ const app = {
                                             <div class="media_right">
                                                 <div class="sub_menu_item">
                                                     <div class="has_sub_menu">
-                                                        <i class="bi bi-three-dots"></i>
+                                                        <i class="bi bi-three-dots discover-option"></i>
                                                     </div>
                                                     <div class="sub_menu other">Khác</div>
                                                 </div>
@@ -462,8 +475,57 @@ const app = {
     songArtist.innerHTML = this.currentSong.singer;
   },
 
+  // getDuration: function () {
+  //   const timeEnd = Math.round(audio.duration);
+  //   const minute = Math.floor(timeEnd / 60);
+  //   const second = Math.floor(timeEnd % 60);
+  //   // timeRight.innerHTML = `${minute}:${second}`;
+  //   console.log(minute, second);
+  // },
+
+  getDuration: function () {
+    const timeEnd = Math.floor(audio.duration);
+    const minute = Math.floor(timeEnd / 60);
+    const second = Math.floor(timeEnd % 60);
+    const formatSecond = second < 10 ? `0${second}` : second;
+
+    timeRight.innerHTML = `${minute}:${formatSecond}`;
+  },
+
+  getTimeNow: function (time) {
+    const minute = Math.floor(time / 60);
+    const second = Math.floor(time % 60);
+    const formatSecond = second < 10 ? `0${second}` : second;
+    timeLeft.innerHTML = `${minute}:${formatSecond}`;
+  },
+
+  playRandomSong() {
+    // Khởi tạo biến randomIndex bằng giá trị currentIndex
+    // Vì bài hát khi vào trình duyệt có index là 0, nên set giá trị của randomSong=0 và randomIndex =0
+    let randomIndex = 0;
+
+    // Tạo một mảng chứa các bài hát đã được phát, nếu số lượng mảng ngẫu nhiên bằng số lượng bài hát trong danh sách, làm mới mảng
+    if (this.randomSong.length === this.songs.length) {
+      this.randomSong = [];
+    }
+
+    // Khi mảng chứa bài hát ngẫu nhiên chứa phần tử randomIndex, thực hiện lệnh gán số ngẫu nhiên cho randomIndex
+    while (this.randomSong.includes(randomIndex)) {
+      randomIndex = Math.floor(Math.random() * this.songs.length);
+    }
+
+    // Thêm biến randomIndex vào mảng phát ngẫu nhiên
+    this.randomSong.push(randomIndex);
+    console.log(this.randomSong);
+
+    this.currentIndex = randomIndex;
+    // this.renderCurrentSong();
+  },
+
   handleEvents: function () {
-    var oldVolume = 0;
+    // Tạo biến lưu giá trị khởi tạo của volume
+    var oldVolume = volume.value;
+    var volumeAtZero = false;
     const _this = this;
     // Xử lý sự kiện nút readmore
     const zingReadmores = Array.from($$(".zing_topic_readmore"));
@@ -472,6 +534,23 @@ const app = {
         this.showAllContent(e);
       };
     });
+
+    // Xử lý sự kiện quay imageThumb
+    const imageThumbAnimate = imageThumb.animate(
+      [
+        {
+          transform: "rotate(360deg)",
+        },
+      ],
+      {
+        duration: 10000,
+        iterations: Infinity,
+        easing: "linear",
+        direction: "alternate",
+      }
+    );
+    // Dừng image thumb mặc định
+    imageThumbAnimate.pause();
 
     playBtn.onclick = (e) => {
       // Khi ấn nút play thì thay đổi trạng thái playing
@@ -493,47 +572,164 @@ const app = {
       // Khi currentIndex >= số bài hát thì currentIndex = 0
       // Khi ấn nút next thì thay đổi bài hát, cũng như tự chạy, vậy nên icon sẽ bị thay đổi sang nút pause
 
-      _this.currentIndex++;
-      if (_this.currentIndex > _this.songs.length - 1) {
+      if (_this.isRandom) {
+        _this.playRandomSong();
+      } else {
+        // nextBtn.click();
+        _this.currentIndex++;
+      }
+      // Mảng có 8 bài hát 0 1 2 3 4 5 6 7
+
+      if (_this.currentIndex === _this.songs.length) {
         _this.currentIndex = 0;
       }
       _this.renderCurrentSong();
 
-      audio.play();
-      _this.isPlaying = true;
       playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
+      audio.play();
 
-      // playBtn.click();
+      //Khi next bài thì thanh progress về 0
+      progress.value = 0;
     };
 
     prevBtn.onclick = function (e) {
-      _this.currentIndex--;
+      if (_this.isRandom) {
+        _this.playRandomSong();
+      } else {
+        _this.currentIndex--;
+      }
       if (_this.currentIndex < 0) {
         _this.currentIndex = _this.songs.length - 1;
       }
 
       _this.renderCurrentSong();
-      audio.play();
       _this.isPlaying = true;
       playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
+      audio.play();
+    };
+
+    audio.onplay = function (e) {
+      imageThumbAnimate.play();
+      // playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
+      // this.isPlaying = false;
+    };
+
+    audio.onpause = function () {
+      imageThumbAnimate.pause();
+      // playBtn.classList.replace("fa-circle-pause", "fa-circle-play");
+      // this.isPlaying = true;
+    };
+
+    audio.onended = function () {
+      // Nếu chế độ lặp lại được bật thì khi kết thúc bài hát sẽ hát lại bài đó, nếu không sẽ next sang bài mới
+      if (_this.isRepeat) {
+        audio.play();
+      } else {
+        nextBtn.click();
+      }
+    };
+
+    // Hiển thị thời gian bài hát khi trình duyệt tải xong audio
+    audio.onloadedmetadata = function () {
+      _this.getDuration();
     };
 
     // Xử lý sự kiện tăng giảm volume
     volume.onchange = function (e) {
       audio.volume = volume.value;
       oldVolume = volume.value;
+      console.log(volume.value);
+
+      if (volume.value >= 0.5) {
+        volumeBtn.classList.remove("fa-volume-low");
+        volumeBtn.classList.remove("fa-volume-xmark");
+        volumeBtn.classList.add("fa-volume-high");
+        volumeAtZero = false;
+      } else if (volume.value > 0 && volume.value < 0.5) {
+        volumeBtn.classList.add("fa-volume-low");
+        volumeBtn.classList.remove("fa-volume-high");
+        volumeBtn.classList.remove("fa-volume-xmark");
+        volumeAtZero = false;
+      } else if (volume.value == 0) {
+        volumeBtn.classList.remove("fa-volume-low");
+        volumeBtn.classList.remove("fa-volume-high");
+        volumeBtn.classList.add("fa-volume-xmark");
+        _this.isVolume = true;
+        volumeAtZero = true;
+      }
     };
     // Xử lý sự kiện click nút volume
     volumeBtn.onclick = function () {
+      // _this.isVolume = !_this.isVolume;
+
+      if (volumeAtZero) {
+        volume.value = 1;
+        audio.volume = 1;
+        oldVolume = 1;
+        volumeBtn.classList.remove("fa-volume-xmark");
+        volumeBtn.classList.add("fa-volume-high");
+        volumeAtZero = false;
+      }
       _this.isVolume = !_this.isVolume;
-      if (!_this.isVolume) {
+
+      if (_this.isVolume) {
         volumeBtn.classList.replace("fa-volume-high", "fa-volume-xmark");
         volume.value = 0;
         audio.volume = 0;
       } else {
         volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
         volume.value = oldVolume;
-        audio.volume = oldVolume;
+        audio.volume = volume.value;
+      }
+    };
+
+    // Xử lý sự kiện seek progress
+    progress.onchange = function () {
+      const progressTime = (progress.value * audio.duration) / 100;
+      audio.currentTime = progressTime;
+
+      _this.isPlaying = true;
+      playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
+      audio.play();
+    };
+    // Xử lý value progress
+    audio.ontimeupdate = function () {
+      const progressValue = Math.floor(
+        (audio.currentTime / audio.duration) * 100
+      );
+      progress.value = progressValue;
+
+      _this.getTimeNow(Math.floor(audio.currentTime));
+    };
+
+    // Xử lý chức năng lặp bài hát khi kết thúc bài
+    repeatBtn.onclick = function () {
+      _this.isRepeat = !_this.isRepeat;
+      if (_this.isRepeat) {
+        repeatBtn.classList.add("is-active");
+      } else {
+        repeatBtn.classList.remove("is-active");
+      }
+    };
+
+    //Xử lý sự kiện click nút random
+    randomBtn.onclick = function () {
+      _this.isRandom = !_this.isRandom;
+      if (_this.isRandom) {
+        randomBtn.classList.add("is-active");
+      } else {
+        randomBtn.classList.remove("is-active");
+      }
+    };
+
+    // Xử lý sự kiện chọn bài hát theo ý
+    songList.onclick = function (e) {
+      const song = e.target.closest(".media");
+      if (e.target.closest(".media") && !e.target.closest(".discover-option")) {
+        // console.log(song.getAttribute("data-index"));
+        _this.currentIndex = song.dataset.index;
+        _this.renderCurrentSong();
+        audio.play();
       }
     };
 
