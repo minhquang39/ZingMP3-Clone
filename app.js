@@ -29,6 +29,11 @@ const zingDiscoverWrappers = Array.from($$(".zm_discover_list"));
 
 const songList = $(".discover_playlist");
 
+// Phát tiếp theo
+const miniThumb = $(".next_song_thumb_img");
+const nextSongName = $(".next_song_name");
+const nextSongArtist = $(".next_song_artist");
+
 // Audio
 const audio = $("#audio");
 const playBtn = $(".action-play");
@@ -51,6 +56,8 @@ const timeRight = $(".time_right");
 const timeLeft = $(".time_left");
 const app = {
   currentIndex: 0,
+  nextSong: 0,
+  // randomIndex:,
   isPlaying: false,
   isVolume: false,
   isRepeat: false,
@@ -475,13 +482,22 @@ const app = {
     songArtist.innerHTML = this.currentSong.singer;
   },
 
-  // getDuration: function () {
-  //   const timeEnd = Math.round(audio.duration);
-  //   const minute = Math.floor(timeEnd / 60);
-  //   const second = Math.floor(timeEnd % 60);
-  //   // timeRight.innerHTML = `${minute}:${second}`;
-  //   console.log(minute, second);
-  // },
+  renderNextSong: function () {
+    if (this.isRandom) {
+      this.nextSong = this.playRandomSong();
+    } else if (this.isRepeat) {
+      this.nextSong = this.currentIndex;
+    } else {
+      this.nextSong = this.currentIndex + 1;
+
+      if (this.nextSong == this.songs.length) {
+        this.nextSong = 0;
+      }
+    }
+    miniThumb.src = this.songs[this.nextSong].image;
+    nextSongName.innerHTML = this.songs[this.nextSong].name;
+    nextSongArtist.innerHTML = this.songs[this.nextSong].singer;
+  },
 
   getDuration: function () {
     const timeEnd = Math.floor(audio.duration);
@@ -502,24 +518,24 @@ const app = {
   playRandomSong() {
     // Khởi tạo biến randomIndex bằng giá trị currentIndex
     // Vì bài hát khi vào trình duyệt có index là 0, nên set giá trị của randomSong=0 và randomIndex =0
-    let randomIndex = 0;
+    // let randomIndex = 0;
+    this.randomIndex = this.currentIndex;
 
     // Tạo một mảng chứa các bài hát đã được phát, nếu số lượng mảng ngẫu nhiên bằng số lượng bài hát trong danh sách, làm mới mảng
     if (this.randomSong.length === this.songs.length) {
       this.randomSong = [];
+      this.randomIndex = 0;
     }
 
     // Khi mảng chứa bài hát ngẫu nhiên chứa phần tử randomIndex, thực hiện lệnh gán số ngẫu nhiên cho randomIndex
-    while (this.randomSong.includes(randomIndex)) {
-      randomIndex = Math.floor(Math.random() * this.songs.length);
+    while (this.randomSong.includes(this.randomIndex)) {
+      this.randomIndex = Math.floor(Math.random() * this.songs.length);
     }
 
     // Thêm biến randomIndex vào mảng phát ngẫu nhiên
-    this.randomSong.push(randomIndex);
+    this.randomSong.push(this.randomIndex);
     console.log(this.randomSong);
-
-    this.currentIndex = randomIndex;
-    // this.renderCurrentSong();
+    return this.randomIndex;
   },
 
   handleEvents: function () {
@@ -568,38 +584,36 @@ const app = {
     };
 
     nextBtn.onclick = function (e) {
-      // Khi ấn nút next thì tăng giá trị của currentIndex
-      // Khi currentIndex >= số bài hát thì currentIndex = 0
-      // Khi ấn nút next thì thay đổi bài hát, cũng như tự chạy, vậy nên icon sẽ bị thay đổi sang nút pause
-
       if (_this.isRandom) {
-        _this.playRandomSong();
+        _this.currentIndex = _this.nextSong;
+      } else if (_this.isRepeat) {
+        audio.currentTime = 0;
+        audio.play();
       } else {
-        // nextBtn.click();
         _this.currentIndex++;
-      }
-      // Mảng có 8 bài hát 0 1 2 3 4 5 6 7
-
-      if (_this.currentIndex === _this.songs.length) {
-        _this.currentIndex = 0;
+        if (_this.currentIndex === _this.songs.length) {
+          _this.currentIndex = 0;
+        }
       }
       _this.renderCurrentSong();
-
+      _this.isPlaying = true;
       playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
       audio.play();
 
-      //Khi next bài thì thanh progress về 0
       progress.value = 0;
     };
 
     prevBtn.onclick = function (e) {
       if (_this.isRandom) {
-        _this.playRandomSong();
+        _this.currentIndex = _this.nextSong;
+      } else if (_this.isRepeat) {
+        audio.currentTime = 0;
+        audio.play();
       } else {
         _this.currentIndex--;
-      }
-      if (_this.currentIndex < 0) {
-        _this.currentIndex = _this.songs.length - 1;
+        if (_this.currentIndex < 0) {
+          _this.currentIndex = _this.songs.length - 1;
+        }
       }
 
       _this.renderCurrentSong();
@@ -610,8 +624,7 @@ const app = {
 
     audio.onplay = function (e) {
       imageThumbAnimate.play();
-      // playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
-      // this.isPlaying = false;
+
     };
 
     audio.onpause = function () {
@@ -632,6 +645,7 @@ const app = {
     // Hiển thị thời gian bài hát khi trình duyệt tải xong audio
     audio.onloadedmetadata = function () {
       _this.getDuration();
+      _this.renderNextSong();
     };
 
     // Xử lý sự kiện tăng giảm volume
@@ -707,8 +721,10 @@ const app = {
       _this.isRepeat = !_this.isRepeat;
       if (_this.isRepeat) {
         repeatBtn.classList.add("is-active");
+        _this.renderNextSong();
       } else {
         repeatBtn.classList.remove("is-active");
+        _this.renderNextSong();
       }
     };
 
@@ -717,8 +733,10 @@ const app = {
       _this.isRandom = !_this.isRandom;
       if (_this.isRandom) {
         randomBtn.classList.add("is-active");
+        _this.renderNextSong();
       } else {
         randomBtn.classList.remove("is-active");
+        _this.renderNextSong();
       }
     };
 
@@ -730,7 +748,11 @@ const app = {
         _this.currentIndex = song.dataset.index;
         _this.renderCurrentSong();
         audio.play();
+        playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
+        _this.isPlaying = true;
       }
+      _this.nextSong = _this.currentIndex + 1;
+      // _this.renderNextSong();
     };
 
     // Hiển thị bài hát đầu tiên khi vào trình duyệt
