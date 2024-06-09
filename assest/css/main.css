@@ -38,3 +38,20 @@
 .display_none {
     display: none;
 }
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.center {
+    text-align: center !important;
+}
+
+.action-playing {
+    width: 18px;
+    height: 18px;
+    background-image: url(https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/icons/icon-playing.gif);
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}

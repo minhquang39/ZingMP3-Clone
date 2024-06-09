@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/png" href="./assest/zingmp3.jpg" />
+    <link rel="shortcut icon" type="image/png" href="./assest/zingmp3.png" />
 
     <title>Zing MP3 - Nghe nhạc mới, HOT nhất và tải nhạc miễn phí</title>
 
@@ -144,19 +144,19 @@
                 </div> -->
 
                 <div class="zm_navbar_playlist">
-                    <button>
-                        <i>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M0.5164 7.14319C1.32829 3.21545 3.8263 1.02782 7.72282 0.366909C10.6032 -0.121503 13.4847 -0.12767 16.3602 0.380652C20.3723 1.08984 22.7841 3.40504 23.5524 7.39215C24.1461 10.4736 24.1554 13.5879 23.5431 16.6663C22.7218 20.5669 20.1593 22.9747 16.2772 23.6331C13.3968 24.1215 10.5153 24.1277 7.63977 23.6193C3.62772 22.9102 1.20521 20.4794 0.436861 16.4923C-0.186982 13.3905 -0.126933 10.2566 0.5164 7.14319Z"
-                                    fill="#141414" fill-opacity="0.2"></path>
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M11.25 12.75L11.25 18C11.25 18.4142 11.5858 18.75 12 18.75C12.4142 18.75 12.75 18.4142 12.75 18L12.75 12.75H18C18.4142 12.75 18.75 12.4142 18.75 12C18.75 11.5858 18.4142 11.25 18 11.25H12.75L12.75 6C12.75 5.58579 12.4142 5.25 12 5.25C11.5858 5.25 11.25 5.58579 11.25 6L11.25 11.25H6C5.58579 11.25 5.25 11.5858 5.25 12C5.25 12.4142 5.58579 12.75 6 12.75H11.25Z"
-                                    fill="#FEFFFF"></path>
-                            </svg>
-                        </i>
-                        <span>Tạo playlist mới</span>
-                    </button>
+                    <!-- <button> -->
+                    <i>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.5164 7.14319C1.32829 3.21545 3.8263 1.02782 7.72282 0.366909C10.6032 -0.121503 13.4847 -0.12767 16.3602 0.380652C20.3723 1.08984 22.7841 3.40504 23.5524 7.39215C24.1461 10.4736 24.1554 13.5879 23.5431 16.6663C22.7218 20.5669 20.1593 22.9747 16.2772 23.6331C13.3968 24.1215 10.5153 24.1277 7.63977 23.6193C3.62772 22.9102 1.20521 20.4794 0.436861 16.4923C-0.186982 13.3905 -0.126933 10.2566 0.5164 7.14319Z"
+                                fill="#141414" fill-opacity="0.2"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M11.25 12.75L11.25 18C11.25 18.4142 11.5858 18.75 12 18.75C12.4142 18.75 12.75 18.4142 12.75 18L12.75 12.75H18C18.4142 12.75 18.75 12.4142 18.75 12C18.75 11.5858 18.4142 11.25 18 11.25H12.75L12.75 6C12.75 5.58579 12.4142 5.25 12 5.25C11.5858 5.25 11.25 5.58579 11.25 6L11.25 11.25H6C5.58579 11.25 5.25 11.5858 5.25 12C5.25 12.4142 5.58579 12.75 6 12.75H11.25Z"
+                                fill="#FEFFFF"></path>
+                        </svg>
+                    </i>
+                    <span>Tạo playlist mới</span>
+                    <!-- </button> -->
                 </div>
             </div>
         </div>
@@ -239,8 +239,75 @@
                                     <div class="header_dropdown_item_right">
                                         <i class="fa-solid fa-chevron-right"></i>
                                     </div>
+                                    <!--  -->
+                                    <div id="modal_header_music">
+                                        <div class="header_dropdown_music">
+                                            <div class="header_dropdown_head">
+                                                <span class="header_dropdown_move_song">Chuyển bài</span>
+                                                <span class="header_dropdown_class">plus</span>
+                                            </div>
 
+                                            <div class="header_dropdown_transfer">
+                                                <span>Chuyển bài mượt mà (Cross fade)</span>
+                                                <div class="dropdown_transfer_smooth">
+                                                    <input type="checkbox" name="" id="transfer1"
+                                                        class="transfer-checkbox">
+                                                    <label for="transfer1" class="transfer_smooth"></label>
+                                                </div>
+                                            </div>
 
+                                            <input type="range" name="" id="" step="1" value="8" min="0" max="16"
+                                                class="header_dropdown_range">
+
+                                            <span class="header_dropdown_value">8 giây</span>
+
+                                            <div class="header_dropdown_transfer">
+                                                <span>Bỏ qua khoảng lặng (Gapless)</span>
+                                                <div class="dropdown_transfer_smooth">
+                                                    <input type="checkbox" name="" id="transfer2"
+                                                        class="transfer-checkbox">
+                                                    <label for="transfer2" class="transfer_smooth"></label>
+                                                </div>
+                                            </div>
+
+                                            <span class="header_dropdown_remove_silient">Loại bỏ đoạn im lặng khi chuyển
+                                                bài hát</span>
+
+                                            <div class="header_dropdown_divided"></div>
+                                            <ul class="header_dropdown_quality">
+                                                <span class="header_dropdown_quality_class">Chất lượng nhạc</span>
+                                                <li class="header_dropdown_quality_item">
+                                                    <label for="quality1">Thường (128 kbps)</label>
+                                                    <input type="radio" name="quality" id="quality1" checked>
+                                                </li>
+                                                <li class="header_dropdown_quality_item">
+                                                    <label for="quality2">Cao (320 kbps)
+                                                    </label>
+                                                    <input type="radio" name="quality" id="quality2">
+                                                </li>
+                                                <li class="header_dropdown_quality_item">
+                                                    <label for="quality3">Lossless</label>
+                                                    <span class="header_dropdown_class dropdown_quality">plus</span>
+
+                                                    <input type="radio" name="quality" id="quality3">
+                                                </li>
+
+                                            </ul>
+
+                                            <div class="header_dropdown_divided"></div>
+                                            <span class="header_dropdown_play">Phát nhạc</span>
+                                            <div class="header_dropdown_transfer">
+                                                <span>Luôn phát nhạc toàn màn hình</span>
+                                                <div class="dropdown_transfer_smooth">
+                                                    <input type="checkbox" name="" id="transfer3"
+                                                        class="transfer-checkbox">
+                                                    <label for="transfer3" class="transfer_smooth"></label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!--  -->
                                 </li>
                                 <li class="header_dropdown_item">
                                     <div class="header_dropdown_item_left">
@@ -489,8 +556,16 @@
                                     <li class="zm_discover_item">Quốc Tế</li>
                                 </ul>
 
-                                <div class="discover_playlist mt--30">
+                                <div class="zm_discover_playlists">
+                                    <div class="discover_playlist is-active all-playlist mt--30">
 
+                                    </div>
+                                    <div class="discover_playlist vietnam-playlist mt--30">
+
+                                    </div>
+                                    <div class="discover_playlist other-playlist mt--30">
+
+                                    </div>
                                 </div>
 
 
@@ -549,31 +624,129 @@
 
 
                                     <div class="row">
-                                        <div class="col c-12 l-12 m-12">
+                                        <div class="col c-12 l-12 m-12 zm_discover_chance_body">
                                             <div class="zm_discover_chance_wrapper row no-wrap ">
 
-
-
-
-
-
-
-                                                <div class="gallery_discover_prev "><i
-                                                        class="fa-solid fa-angle-left discover-btn"></i></div>
-                                                <div class="gallery_discover_next ">
-                                                    <i class="fa-solid fa-angle-right discover-btn"></i>
-                                                </div>
-
-
                                             </div>
+                                            <div class="gallery_discover_prev "><i
+                                                    class="fa-solid fa-angle-left discover-btn"></i>
+                                            </div>
+                                            <div class="gallery_discover_next ">
+                                                <i class="fa-solid fa-angle-right discover-btn"></i>
+                                            </div>
+
                                         </div>
                                     </div>
 
                                 </div>
 
+                                <div class="week_chart_section mt--30">
+                                    <div class="row week_chart_wrapper">
+                                        <div class="col c-4 l-4 m-4">
+                                            <div class="week_chart_item">
+                                                <img src="https://zmp3-static.zmdcdn.me/skins/zmp3-v5.2/images/song-vn-2x.jpg"
+                                                    alt="" class="week_chart_img">
+                                            </div>
+                                        </div>
+                                        <div class="col c-4 l-4 m-4">
+                                            <div class="week_chart_item">
+                                                <img src="https://zmp3-static.zmdcdn.me/skins/zmp3-v5.2/images/web_song_usuk.jpg"
+                                                    alt="" class="week_chart_img">
+                                            </div>
+
+                                        </div>
+                                        <div class="col c-4 l-4 m-4">
+                                            <div class="week_chart_item">
+                                                <img src="https://zmp3-static.zmdcdn.me/skins/zmp3-v5.2/images/web_song_kpop.jpg"
+                                                    alt="" class="week_chart_img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div class="fav_discover_section mt--30">
+                                    <div class="flex-container">
+                                        <span class="fav_playlist_header">Trữ Tình & Bolero</span>
+                                        <span class="fav_playlist_others display_none">Tất cả <i
+                                                class="fa-solid fa-chevron-right"></i></span>
+                                    </div>
+                                    <div class="fav_discover_list row">
+
+                                    </div>
+                                </div>
+                                <div class="fav_discover_section mt--30">
+                                    <div class="flex-container">
+                                        <span class="fav_playlist_header">Trữ Tình & Bolero</span>
+                                        <span class="fav_playlist_others display_none">Tất cả <i
+                                                class="fa-solid fa-chevron-right"></i></span>
+                                    </div>
+                                    <div class="fav_discover_list row">
+
+                                    </div>
+                                </div>
+                                <div class="fav_discover_section mt--30">
+                                    <div class="flex-container">
+                                        <span class="fav_playlist_header">Trữ Tình & Bolero</span>
+                                        <span class="fav_playlist_others display_none">Tất cả <i
+                                                class="fa-solid fa-chevron-right"></i></span>
+                                    </div>
+                                    <div class="fav_discover_list row">
+
+                                    </div>
+                                </div>
+                                <!--  -->
+
+                            </div>
+                        </div>
+                        <div class="zing_radio_wrapper no-padding">
+                            <div class="row radio_section mt--30">
+                                <div class="col c-12 l-12 m-12">
+                                    <div class="radio_header">
+                                        <a href="" class="radio_header_title">Radio</a>
+                                        <div class="radio_header_direct">
+                                            <div class="radio_move_btn btn--disable">
+                                                <i class="fa-solid fa-chevron-left"></i>
+                                            </div>
+                                            <div class="radio_move_btn">
+                                                <i class="fa-solid fa-chevron-right"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col c-12 l-12 m-12 mt--30 radio_wrapper">
+
+
+                                    <button class="zm_control zm_radio_left btn--disable">
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </button>
+                                    <button class="zm_control zm_radio_right ">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </button>
+                                    <div class="radio_main row no-wrap">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="zm_partner_section mt--30">
+                            <h3 class="title center">Đối tác âm nhạc</h3>
+                            <div class="zm_partner_wrapper mt--30">
+                                <!--  -->
+
+                                <!-- <div class="zm_partner_item">
+                                    <div class="content">
+                                        <img src="./assest/image/partner/pic16.png" alt="" class="zm_partner_img">
+                                    </div>
+                                </div> -->
+
+                                <!--  -->
                             </div>
                         </div>
                     </div>
+                    <!--  -->
                 </div>
                 <div class="zing_tab zing_chart grid">
                     <div class="zing_chart_wrapper">
@@ -958,69 +1131,7 @@
                     </div>
                 </div>
             </div>
-            <div id="modal_header_music">
-                <div class="header_dropdown_music">
-                    <div class="header_dropdown_head">
-                        <span class="header_dropdown_move_song">Chuyển bài</span>
-                        <span class="header_dropdown_class">plus</span>
-                    </div>
 
-                    <div class="header_dropdown_transfer">
-                        <span>Chuyển bài mượt mà (Cross fade)</span>
-                        <div class="dropdown_transfer_smooth">
-                            <input type="checkbox" name="" id="transfer1" class="transfer-checkbox">
-                            <label for="transfer1" class="transfer_smooth"></label>
-                        </div>
-                    </div>
-
-                    <input type="range" name="" id="" step="1" value="8" min="0" max="16" class="header_dropdown_range">
-
-                    <span class="header_dropdown_value">8 giây</span>
-
-                    <div class="header_dropdown_transfer">
-                        <span>Bỏ qua khoảng lặng (Gapless)</span>
-                        <div class="dropdown_transfer_smooth">
-                            <input type="checkbox" name="" id="transfer2" class="transfer-checkbox">
-                            <label for="transfer2" class="transfer_smooth"></label>
-                        </div>
-                    </div>
-
-                    <span class="header_dropdown_remove_silient">Loại bỏ đoạn im lặng khi chuyển bài hát</span>
-
-                    <div class="header_dropdown_divided"></div>
-                    <ul class="header_dropdown_quality">
-                        <span class="header_dropdown_quality_class">Chất lượng nhạc</span>
-                        <li class="header_dropdown_quality_item">
-                            <label for="quality1">Thường (128 kbps)</label>
-                            <input type="radio" name="quality" id="quality1" checked>
-                        </li>
-                        <li class="header_dropdown_quality_item">
-                            <label for="quality2">Cao (320 kbps)
-                            </label>
-                            <!-- <span class="header_dropdown_class dropdown_quality">plus</span> -->
-                            <input type="radio" name="quality" id="quality2">
-                        </li>
-                        <li class="header_dropdown_quality_item">
-                            <label for="quality3">Lossless</label>
-                            <span class="header_dropdown_class dropdown_quality">plus</span>
-
-                            <input type="radio" name="quality" id="quality3">
-                        </li>
-
-                    </ul>
-
-                    <div class="header_dropdown_divided"></div>
-                    <span class="header_dropdown_play">Phát nhạc</span>
-                    <div class="header_dropdown_transfer">
-                        <span>Luôn phát nhạc toàn màn hình</span>
-                        <div class="dropdown_transfer_smooth">
-                            <input type="checkbox" name="" id="transfer3" class="transfer-checkbox">
-                            <label for="transfer3" class="transfer_smooth"></label>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
         </div>
         <div class="player grid">
             <div class="player_container">
@@ -1060,20 +1171,22 @@
                     <div class="player_control_center_action">
                         <div class="sub_menu_item">
                             <div class="has_sub_menu">
-                                <i class="fa-solid fa-shuffle action action-random"></i>
+                                <i class="bi bi-shuffle action action-random"></i>
                             </div>
                             <div class="sub_menu">Bật phát ngẫu nhiên</div>
                         </div>
                         <div class="sub_menu_item">
                             <div class="has_sub_menu">
-                                <i class="fa-solid fa-backward action action-backward"></i>
+                                <i class="bi bi-skip-backward-fill action action-backward"></i>
+                                <!-- <i class="fa-solid fa-backward action action-backward"></i> -->
                             </div>
                         </div>
-                        <i class="fa-regular fa-circle-play action action-play"></i>
-                        <!-- <i class="fa-regular fa-circle-pause action action-pause"></i> -->
+                        <i class="bi bi-play-circle action action-play"></i>
+                        <!-- <i class="bi bi-pause-circle action action-pause"></i> -->
                         <div class="sub_menu_item">
                             <div class="has_sub_menu">
-                                <i class="fa-solid fa-forward action action-forward"></i>
+                                <!-- <i class="fa-solid fa-forward action action-forward"></i> -->
+                                <i class="bi bi-skip-forward-fill action action-forward"></i>
                             </div>
                             <div class="sub_menu next_song">
                                 <div class="next_song_container">
@@ -1094,7 +1207,8 @@
                         </div>
                         <div class="sub_menu_item">
                             <div class="has_sub_menu">
-                                <i class="fa-solid fa-repeat action action-repeat"></i>
+                                <!-- <i class="fa-solid fa-repeat action action-repeat"></i> -->
+                                <i class="bi bi-repeat action action-repeat"></i>
                             </div>
                             <div class="sub_menu ">
                                 Bật phát lại tất cả
@@ -1105,6 +1219,7 @@
                         <span class="time_left">00:00</span>
                         <div class="player_duaration">
                             <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+                            <div class="track_time"></div>
                         </div>
                         <span class="time_right">05:42</span>
                     </div>
@@ -1113,7 +1228,7 @@
                     <div class="level-item">
                         <div class="sub_menu_item">
                             <div class="has_sub_menu">
-                                <i class="fa-solid fa-compact-disc btn--disable"></i>
+                                <i class="bi bi-youtube btn--disable"></i>
                             </div>
 
                         </div>
@@ -1121,7 +1236,7 @@
                     <div class="level-item">
                         <div class="sub_menu_item">
                             <div class="has_sub_menu">
-                                <i class="fa-solid fa-microphone-lines"></i>
+                                <i class="bi bi-mic"></i>
                             </div>
                             <div class="sub_menu ">Xem lời bài hát</div>
                         </div>
@@ -1129,7 +1244,7 @@
                     <div class="level-item">
                         <div class="sub_menu_item">
                             <div class="has_sub_menu">
-                                <i class="fa-regular fa-window-restore"></i>
+                                <i class="bi bi-window-stack"></i>
                             </div>
                             <div class="sub_menu ">Chế độ cửa sổ</div>
                         </div>
@@ -1142,9 +1257,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="level-item">
+                    <div class="level-item player_volume ">
                         <input id="volume" type="range" value="1" step="0.1" min="0" max="1">
-
+                        <div class=" player_volume">
+                            <div class=" track_time_volume"></div>
+                        </div>
                     </div>
                     <div class="level-item">
                         <div class="divided"></div>
@@ -1152,9 +1269,9 @@
                     <div class="level-item">
                         <div class="sub_menu_item">
                             <div class="has_sub_menu">
-                                <i class="fa-solid fa-bars"></i>
+                                <i class="bi bi-music-note-list"></i>
                             </div>
-                            <div class="sub_menu ">Danh sách phát</div>
+                            <div class="sub_menu playlist">Danh sách phát</div>
                         </div>
                     </div>
                 </div>
@@ -1162,12 +1279,14 @@
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <!-- <script src="script.js"></script> -->
     <script src="./data/top100.js"></script>
     <script src="./data/renderRank.js"></script>
     <script src="./data/category.js"></script>
     <script src="./data/radios.js"></script>
     <script src="./data/discover.js"></script>
+    <script src="./data/partner.js"></script>
     <script src="app.js"></script>
 </body>
 

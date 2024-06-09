@@ -1,3 +1,5 @@
+const $$ = document.querySelectorAll.bind(document);
+const $ = document.querySelector.bind(document);
 // Bảng xếp hạng nhạc mới
 const zingNewSong = $(".zing_new_list");
 
@@ -18,17 +20,30 @@ const normalPlaylistHeader = Array.from($$(".normal_playlist_header"));
 const normalPlaylistWrapper = Array.from($$(".zm_normal_playlist.row"));
 
 // Radio
-const listRadio = $(".radio_main");
+// const listRadio = $(".radio_main");
+const radioWrappers = Array.from($$(".radio_main"));
 
 // Khám phá
 const discover = $(".discover_playlist");
+const vietnamSong = $(".discover_playlist.vietnam-playlist");
+const otherSong = $(".discover_playlist.other-playlist");
+
+//
+//
 
 const zingDiscovers = Array.from($$(".zm_discover_section"));
 const zingDiscoverHeaders = Array.from($$(".discover_playlist_header"));
 const zingDiscoverWrappers = Array.from($$(".zm_discover_list"));
 
-const songList = $(".discover_playlist");
+const songList = $(".zm_discover_playlists");
 
+const discoverNewSong = $(".zm_discover_chance_wrapper");
+
+const favPlaylists = Array.from($$(".fav_discover_section"));
+const favPlaylistNames = Array.from($$(".fav_playlist_header"));
+const favPlaylistWrappers = Array.from($$(".fav_discover_list"));
+
+const partnerList = $(".zm_partner_wrapper");
 // Phát tiếp theo
 const miniThumb = $(".next_song_thumb_img");
 const nextSongName = $(".next_song_name");
@@ -48,7 +63,8 @@ const volume = $("#volume");
 const volumeBtn = $(".volume-btn");
 
 const progress = $("#progress");
-
+const trackTime = $(".track_time");
+const trackTimeVolume = $(".track_time_volume");
 const repeatBtn = $(".action-repeat");
 const randomBtn = $(".action-random");
 
@@ -63,6 +79,7 @@ const app = {
   isRepeat: false,
   isRandom: false,
   randomSong: [0],
+  mediaCount: 0,
 
   newSongs: JSON.parse(localStorage.getItem(RANK_STORAGE)),
   top100s: JSON.parse(localStorage.getItem(top100_STORAGE)),
@@ -75,7 +92,9 @@ const app = {
   // Nhạc của Thùy Chi
   songs: JSON.parse(localStorage.getItem(SONG_STORAGE)),
   discoverPlaylists: JSON.parse(localStorage.getItem(DISCOVER_STORAGE)),
-
+  newPlaylists: JSON.parse(localStorage.getItem(NEWSONG_STORAGE)),
+  favPlaylists: JSON.parse(localStorage.getItem(FAV_STORE)),
+  partners: JSON.parse(localStorage.getItem(PARTNER_STORAGE)),
   get currentSong() {
     return this.songs[this.currentIndex];
   },
@@ -354,8 +373,9 @@ const app = {
   },
 
   renderRadio: function () {
-    this.radios.forEach((radio, index) => {
-      listRadio.innerHTML += `
+    radioWrappers.forEach((radioWrapper) => {
+      this.radios.forEach((radio, index) => {
+        radioWrapper.innerHTML += `
                <div class="radio_live col c-2 l-1-7">
                                             <div class="radio_live_main">
                                                 <div class="radio_live_top">
@@ -393,26 +413,37 @@ const app = {
                                             </div>
                                         </div>
   `;
+      });
     });
   },
 
   renderSong: function () {
-    this.songs.forEach((song, index) => {
-      discover.innerHTML += `
-     <div class="col c-4 l-4 m-4">
+    function createSong(song, index) {
+      return `
+                                      <div class="col c-4 l-4 m-4">
                                         <div class="media" data-index="${index}">
                                             <div class="media_left">
                                                 <div class="song_thumb">
-                                                    <img src="${song.image}" alt=""
-                                                        class="discover_img" width="60px" height="60px">
-                                                    <div class="overlay">
-                                                    <i class="fa-solid fa-play play_btn"></i>
-                                                    </div>
-                                                </div>
+                                                    <img src="${
+                                                      song.image
+                                                    }" alt=""
+                                                        class="discover_img" width="" height="">
+                                                        <div class="overlay">
+                                                        <i class="fa-solid fa-play play_btn play_btn_discover"></i>
+                                                        
+                                                        <i class="icon action-playing action_playing_discover ic-gif-playing-white"></i>
+                                                        </div>
+                                                        </div>
                                                 <div class="song_info">
-                                                    <h3 class="song_title_main">${song.name}</h3>
-                                                    <h3 class="song_singer">${song.singer}</h3>
-                                                    <p class="song_time_release">2 ngày trước</p>
+                                                    <h3 class="song_title_main">${
+                                                      song.name
+                                                    }</h3>
+                                                    <h3 class="song_singer">${
+                                                      song.singer
+                                                    }</h3>
+                                                    <p class="song_time_release">${Math.floor(
+                                                      Math.random() * 30
+                                                    )} ngày trước</p>
                                                 </div>
                                             </div>
                                             <div class="media_right">
@@ -426,6 +457,16 @@ const app = {
                                         </div>
                                     </div>
   `;
+    }
+
+    this.songs.forEach((song, index) => {
+      discover.innerHTML += createSong(song, index);
+
+      if (song.country === "vn") {
+        vietnamSong.innerHTML += createSong(song, index);
+      } else if (song.country === "other") {
+        otherSong.innerHTML += createSong(song, index);
+      }
     });
   },
 
@@ -475,6 +516,131 @@ const app = {
     });
   },
 
+  renderNewPlaylist: function () {
+    this.newPlaylists.forEach((listNewPlaylist) => {
+      discoverNewSong.innerHTML += `
+        <div class="col c-4 l-4 m-4">
+            <div class="zm_discover_media">
+                                                        <div class="media_left">
+
+                                                            <img src="${
+                                                              listNewPlaylist.image
+                                                            }" alt=""
+                                                                class="media_left_thumb">
+                                                            <div class="overlay">
+                                                                <i class="fa-regular fa-circle-play playlist_play"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="media_content">
+                                                            <div class="media_content_top">
+                                                                <h3 class="media_title">${
+                                                                  listNewPlaylist.name
+                                                                }</h3>
+
+                                                           ${listNewPlaylist.singers
+                                                             .map(
+                                                               (singer) => `
+                                                              <a href="#" class="subtitle is-ghost">
+                                                                ${singer}
+                                                              </a>
+                                                            `
+                                                             )
+                                                             .join(",")}
+
+                                                            </div>
+                                                            <div class="media_content_bot">
+                                                                <span class="order">#${
+                                                                  listNewPlaylist.num
+                                                                }</span>
+                                                                <span class="time_realesed">${
+                                                                  listNewPlaylist.time
+                                                                }</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+  `;
+    });
+    discoverNewSong.innerHTML += `
+            <div class="col c-4 l-4 m-4">
+                                                    <div class="zm_discover_media empty-item">
+
+                                                        Xem tất cả
+                                                    </div>
+
+                                                </div>
+`;
+  },
+
+  renderFavPlaylist() {
+    this.favPlaylists.forEach((favPlaylist, index) => {
+      favPlaylistNames[index].innerHTML = `${favPlaylist.header}`;
+      favPlaylist.playlists.forEach((playlist) => {
+        favPlaylistWrappers[index].innerHTML += `
+          <div class="zm_carousel_item col c-3">
+              <div class="playlist_wrapper">
+                    <div class="zm_card">
+                           <div class="playlist_img" style="background-image: url(${
+                             playlist.image
+                           });"></div>
+                        <div class="overlay"></div>
+
+                            <div class="playlist_sub_menu">
+                                            <div class="sub_menu_item">
+                                                <div class="has_sub_menu">
+                                                     <i class="bi bi-heart love_sym"></i>
+                                                </div>
+                                                <div class="sub_menu">
+                                                    Thêm vào thư viện
+                                                </div>
+                                            </div>
+                                            <div class="sub_menu_item">
+                                                <div class="has_sub_menu playlist_play">
+                                                    <i class="fa-regular fa-circle-play playlist_play"></i>
+                                                </div>
+
+                                            </div>
+                                            <div class="sub_menu_item">
+                                                <div class="has_sub_menu">
+                                                    <i class="bi bi-three-dots"></i>
+                                                </div>
+                                                <div class="sub_menu other">Khác</div>
+                                            </div>
+                                        </div>
+
+                      </div>
+                        <div class="zm_card_content">
+                                    <h3 class="zm__card_content_title">${
+                                      playlist.name
+                                    }</h3>
+                                 <h4 class="zm__card_content_sub_title">
+                                  ${playlist.singles
+                                    .map((single) => `<a>${single}</a>`)
+                                    .join(",")}
+                                    
+                                  </h4>
+
+                        </div>
+                </div>
+            </div>
+    `;
+      });
+    });
+  },
+
+  renderPartner() {
+    this.partners.forEach((partner) => {
+      partnerList.innerHTML += `
+          <div class="zm_partner_item">
+                                    <div class="content">
+                                        <img src="${partner}" alt="" class="zm_partner_img">
+                                    </div>
+                                </div>
+      `;
+    });
+  },
+
   renderCurrentSong: function () {
     audio.src = this.currentSong.path;
     imageThumb.src = this.currentSong.image;
@@ -489,7 +655,6 @@ const app = {
       this.nextSong = this.currentIndex;
     } else {
       this.nextSong = this.currentIndex + 1;
-
       if (this.nextSong == this.songs.length) {
         this.nextSong = 0;
       }
@@ -534,7 +699,6 @@ const app = {
 
     // Thêm biến randomIndex vào mảng phát ngẫu nhiên
     this.randomSong.push(this.randomIndex);
-    console.log(this.randomSong);
     return this.randomIndex;
   },
 
@@ -542,6 +706,8 @@ const app = {
     // Tạo biến lưu giá trị khởi tạo của volume
     var oldVolume = volume.value;
     var volumeAtZero = false;
+    const medias = Array.from($$(".media"));
+    medias[0].classList.add("primary");
     const _this = this;
     // Xử lý sự kiện nút readmore
     const zingReadmores = Array.from($$(".zing_topic_readmore"));
@@ -574,16 +740,26 @@ const app = {
 
       // Nếu playing là true thì bật nhạc, thay đổi icon
       // Nếu playing là fasle thì tắt nhạc, thay đổi icon
+      const currentPlaying = $(".media.playing") || $(".media.primary");
+      if (currentPlaying) {
+        currentPlaying.classList.remove("playing");
+      }
       if (this.isPlaying) {
         audio.play();
-        playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
+        playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
+        medias[_this.currentIndex].classList.add("playing");
       } else {
         audio.pause();
-        playBtn.classList.replace("fa-circle-pause", "fa-circle-play");
+        playBtn.classList.replace("bi-pause-circle", "bi-play-circle");
+        medias[_this.currentIndex].classList.remove("playing");
       }
     };
 
     nextBtn.onclick = function (e) {
+      const currentPlaying = $(".media.playing") || $(".media.primary");
+      if (currentPlaying) {
+        currentPlaying.classList.remove("playing", "primary");
+      }
       if (_this.isRandom) {
         _this.currentIndex = _this.nextSong;
       } else if (_this.isRepeat) {
@@ -595,15 +771,20 @@ const app = {
           _this.currentIndex = 0;
         }
       }
+      medias[_this.currentIndex].classList.add("playing", "primary");
+
       _this.renderCurrentSong();
       _this.isPlaying = true;
-      playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
       audio.play();
-
+      playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
       progress.value = 0;
     };
 
     prevBtn.onclick = function (e) {
+      const currentPlaying = $(".media.playing") || $(".media.primary");
+      if (currentPlaying) {
+        currentPlaying.classList.remove("playing", "primary");
+      }
       if (_this.isRandom) {
         _this.currentIndex = _this.nextSong;
       } else if (_this.isRepeat) {
@@ -615,16 +796,16 @@ const app = {
           _this.currentIndex = _this.songs.length - 1;
         }
       }
+      medias[_this.currentIndex].classList.add("playing", "primary");
 
       _this.renderCurrentSong();
       _this.isPlaying = true;
-      playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
       audio.play();
+      playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
     };
 
     audio.onplay = function (e) {
       imageThumbAnimate.play();
-
     };
 
     audio.onpause = function () {
@@ -652,7 +833,7 @@ const app = {
     volume.onchange = function (e) {
       audio.volume = volume.value;
       oldVolume = volume.value;
-      console.log(volume.value);
+      trackTimeVolume.style.width = volume.value * 100 + "%";
 
       if (volume.value >= 0.5) {
         volumeBtn.classList.remove("fa-volume-low");
@@ -690,10 +871,12 @@ const app = {
         volumeBtn.classList.replace("fa-volume-high", "fa-volume-xmark");
         volume.value = 0;
         audio.volume = 0;
+        trackTimeVolume.style.width = volume.value * 100 + "%";
       } else {
         volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
         volume.value = oldVolume;
         audio.volume = volume.value;
+        trackTimeVolume.style.width = volume.value * 100 + "%";
       }
     };
 
@@ -703,7 +886,7 @@ const app = {
       audio.currentTime = progressTime;
 
       _this.isPlaying = true;
-      playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
+      playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
       audio.play();
     };
     // Xử lý value progress
@@ -714,6 +897,7 @@ const app = {
       progress.value = progressValue;
 
       _this.getTimeNow(Math.floor(audio.currentTime));
+      trackTime.style.width = progressValue + "%";
     };
 
     // Xử lý chức năng lặp bài hát khi kết thúc bài
@@ -743,20 +927,244 @@ const app = {
     // Xử lý sự kiện chọn bài hát theo ý
     songList.onclick = function (e) {
       const song = e.target.closest(".media");
-      if (e.target.closest(".media") && !e.target.closest(".discover-option")) {
-        // console.log(song.getAttribute("data-index"));
-        _this.currentIndex = song.dataset.index;
+
+      if (song && !e.target.closest(".discover-option")) {
+        const currentPlaying =
+          $(".media.playing.primary") || $(".media.primary");
+        if (currentPlaying) {
+          currentPlaying.classList.remove("playing", "primary");
+        }
+
+        song.classList.add("playing", "primary");
+        // Cập nhật chỉ số bài hát hiện tại và phát nhạc
+        _this.currentIndex = parseInt(song.dataset.index);
         _this.renderCurrentSong();
         audio.play();
-        playBtn.classList.replace("fa-circle-play", "fa-circle-pause");
+        playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
         _this.isPlaying = true;
       }
-      _this.nextSong = _this.currentIndex + 1;
-      // _this.renderNextSong();
     };
 
     // Hiển thị bài hát đầu tiên khi vào trình duyệt
     this.renderCurrentSong();
+  },
+
+  handleDom: function () {
+    const newSongList = document.querySelector(".zm_discover_chance_wrapper");
+    const leftNewSongList = document.querySelector(
+      ".zm_discover_chance_body .gallery_discover_prev"
+    );
+    const rightNewSongList = document.querySelector(
+      ".zm_discover_chance_body .gallery_discover_next"
+    );
+
+    const radioContainers = [...$$(".radio_main")];
+    const leftRadio = [...$$(".zm_radio_left")];
+    const rightRadio = [...$$(".zm_radio_right")];
+    function changeSlide(slideContainer, step) {
+      if (slideContainer) {
+        const firstSlideWidth = slideContainer.firstElementChild.clientWidth;
+
+        slideContainer.scrollLeft += firstSlideWidth * step;
+
+        if (slideContainer.scrollLeft >= slideContainer.scrollWidth) {
+          slideContainer.scrollLeft = 0;
+        }
+      }
+    }
+
+    leftNewSongList.onclick = () => changeSlide(newSongList, -3);
+    rightNewSongList.onclick = () => changeSlide(newSongList, 3);
+
+    leftRadio[0].onclick = function () {
+      changeSlide(radioContainers[0], -3);
+    };
+    rightRadio[0].onclick = function () {
+      changeSlide(radioContainers[0], 3);
+    };
+
+    leftRadio[1].onclick = function () {
+      changeSlide(radioContainers[1], -3);
+    };
+    rightRadio[1].onclick = function () {
+      changeSlide(radioContainers[1], 3);
+    };
+
+    //Xử lý sự kiện ở ô input
+    const input_header = document.querySelector(".header_search_input");
+    const search_header = input_header.parentElement;
+    const search_history = document.querySelector(".header_search_history");
+    const header_close = document.querySelector(".header_search_close_right");
+
+    input_header.onclick = function () {
+      input_header.style.backgroundColor = "#34224f";
+      search_header.style.backgroundColor = "#34224f";
+      search_history.style.display = "block";
+    };
+
+    input_header.oninput = function () {
+      var inputValue = input_header.value;
+      if (inputValue.length > 0) {
+        header_close.style.display = "block";
+      } else {
+        header_close.style.display = "none";
+      }
+    };
+
+    // Xử lý sự kiện nút close header
+    header_close.onclick = function () {
+      input_header.value = "";
+      header_close.style.display = "none";
+    };
+
+    var isShowingInfomation = false;
+
+    // Xử lý sự kiện khi click vào biểu tượng người dùng
+    const account = document.querySelector(".header_account");
+    const account_infomation = document.querySelector(
+      ".header_account_infomation"
+    );
+    account.onclick = function (e) {
+      isShowingInfomation = !isShowingInfomation;
+      if (isShowingInfomation) {
+        account_infomation.style.display = "block";
+      } else {
+        account_infomation.style.display = "none";
+      }
+    };
+
+    account_infomation.onclick = function (e) {
+      e.stopPropagation();
+    };
+
+    search_header.onclick = function (e) {
+      e.stopPropagation();
+    };
+
+    // Xử lý sự kiện input range
+    const input_range = document.querySelector(".header_dropdown_range");
+    const secondBlock = document.querySelector(".header_dropdown_value");
+    input_range.onchange = function () {
+      secondBlock.innerHTML = `${input_range.value} giây`;
+    };
+
+    const header_setting = document.querySelector(".header_setting");
+    const header_setting_icon = document.querySelector(".header_setting_icon");
+    const header_seemore = document.querySelector(".header_see_more");
+    const header_dropdown = document.querySelector(".header_dropdown");
+    var isSeeMore = false;
+    header_setting_icon.onmouseover = function () {
+      header_seemore.style.display = "flex";
+      isSeeMore = true;
+    };
+    header_setting_icon.onmouseout = function () {
+      header_seemore.style.display = "none";
+      isSeeMore = false;
+    };
+
+    header_dropdown.onmouseover = function (e) {
+      header_seemore.style.display = "none";
+    };
+
+    header_dropdown.onclick = function (e) {};
+
+    header_setting.onclick = function () {
+      isShowingInfomation = !isShowingInfomation;
+      // e.stopPropagation();
+      if (isShowingInfomation) {
+        header_dropdown.style.display = "block";
+      } else {
+        header_dropdown.style.display = "none";
+      }
+    };
+
+    header_setting_icon.onclick = function (e) {
+      // e.stopPropagation();
+    };
+    // Xử lý ẩn hiện music player
+    const music_select = document.querySelector(
+      ".header_dropdown_item.play_music"
+    );
+    const modal_music = document.getElementById("modal_header_music");
+    music_select.onmouseover = function () {
+      modal_music.style.display = "block";
+    };
+    //
+    music_select.onmouseout = function () {
+      modal_music.style.display = "none";
+    };
+    //
+    document.onclick = function (e) {
+      if (
+        !account.contains(e.target) &&
+        !account_infomation.contains(e.target)
+      ) {
+        account_infomation.style.display = "none";
+        isShowingInfomation = false; // Đặt lại biến khi ẩn thông tin
+      }
+
+      if (!search_history.contains(e.target)) {
+        search_history.style.display = "none";
+      }
+
+      if (
+        !header_dropdown.contains(e.target) &&
+        !header_setting.contains(e.target) &&
+        !header_setting_icon.contains(e.target)
+      ) {
+        header_dropdown.style.display = "none";
+      }
+    };
+
+    // Thực hiện duyệt qua mảng sidebar left nếu click mục nào, lập tức remove class active ở các mục trước đó, thêm vào mục hiện tại
+    const navbars = $$(".zm_navbar_item");
+    const zing_tabs = Array.from($$(".zing_tab"));
+    Array.from(navbars).forEach((navbar, index) => {
+      navbar.onclick = function () {
+        $(".zm_navbar_item.active").classList.remove("active");
+        navbar.classList.add("active");
+
+        $(".zing_tab.active").classList.remove("active");
+        zing_tabs[index].classList.add("active");
+      };
+    });
+    // Multiple tab library
+    const menuLibrarys = Array.from($$(".zm_library_item"));
+    const itemLibrarys = Array.from($$(".zm_library_tab"));
+    menuLibrarys.forEach((menuLibrary, index) => {
+      menuLibrary.onclick = function () {
+        $(".zm_library_item.is-active").classList.remove("is-active");
+        menuLibrary.classList.add("is-active");
+
+        $(".zm_library_tab.is-active").classList.remove("is-active");
+        itemLibrarys[index].classList.add("is-active");
+      };
+    });
+
+    const items = Array.from($$(".item"));
+    const actionTabs = Array.from($$(".zm_sub_empty"));
+    items.forEach((item, index) => {
+      item.onclick = function () {
+        $(".item.is-active").classList.remove("is-active");
+        item.classList.add("is-active");
+
+        $(".zm_sub_empty.is-active").classList.remove("is-active");
+        actionTabs[index].classList.add("is-active");
+      };
+    });
+
+    const regions = Array.from($$(".zm_discover_item"));
+    const countryMusics = Array.from($$(".discover_playlist"));
+
+    regions.forEach((region, index) => {
+      region.onclick = function () {
+        $(".zm_discover_item.is-active").classList.remove("is-active");
+        region.classList.add("is-active");
+
+        $(".discover_playlist.is-active").classList.remove("is-active");
+        countryMusics[index].classList.add("is-active");
+      };
+    });
   },
 
   // Xuất giao diện trình phát nhạc
@@ -769,12 +1177,19 @@ const app = {
     this.renderRadio();
     this.renderSong();
     this.renderDiscoverPlaylist();
+    this.renderNewPlaylist();
+    this.renderFavPlaylist();
+    this.renderPartner();
   },
 
   start: function () {
     this.render();
     this.handleEvents();
+    this.handleDom();
   },
 };
 
 app.start();
+
+// const newSongList = $(".zm_discover_chance_wrapper");
+// console.log(newSongList.firstElementChild.clientWidth);
