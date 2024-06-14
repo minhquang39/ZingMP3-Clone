@@ -70,6 +70,15 @@ const randomBtn = $(".action-random");
 
 const timeRight = $(".time_right");
 const timeLeft = $(".time_left");
+
+// Theme
+const themeHeader = [...$$(".theme_type")];
+const themeWraper = [...$$(".theme_wrapper")];
+
+const main = $("#main");
+
+// Local Storage
+const PLAYER_MUSIC_CLONE = "ZINGMP3_CLONE";
 const app = {
   currentIndex: 0,
   nextSong: 0,
@@ -80,7 +89,12 @@ const app = {
   isRandom: false,
   randomSong: [0],
   mediaCount: 0,
-
+  currentTheme: "",
+  currentBackground: "",
+  indexTheme: 0,
+  currentVolume: 0,
+  trackTimeVolume: 0,
+  // PLAYER_MUSIC_CLONE: "ZINGMP3_CLONE",
   newSongs: JSON.parse(localStorage.getItem(RANK_STORAGE)),
   top100s: JSON.parse(localStorage.getItem(top100_STORAGE)),
   categorys: JSON.parse(localStorage.getItem(CATEGORY_STORAGE)),
@@ -95,6 +109,8 @@ const app = {
   newPlaylists: JSON.parse(localStorage.getItem(NEWSONG_STORAGE)),
   favPlaylists: JSON.parse(localStorage.getItem(FAV_STORE)),
   partners: JSON.parse(localStorage.getItem(PARTNER_STORAGE)),
+  themes: JSON.parse(localStorage.getItem(THEME_STORAGE)),
+  config: JSON.parse(localStorage.getItem(PLAYER_MUSIC_CLONE)) || {},
   get currentSong() {
     return this.songs[this.currentIndex];
   },
@@ -702,12 +718,64 @@ const app = {
     return this.randomIndex;
   },
 
+  renderTheme() {
+    themes.forEach((theme, index) => {
+      themeHeader[index].innerHTML = theme.header;
+      theme.displays.forEach((display, idx) => {
+        themeWraper[index].innerHTML += `
+                <div class="theme_item ${
+                  display.background ? "hasBackground" : ""
+                }" data-theme=${display.data_theme} background="${
+          display.background
+        }">
+                          <div class="theme_header">
+                                <figure>
+                                    <img src="${
+                                      display.image
+                                    }" alt="" class="theme_img">
+                                   
+                                    <div class="overlay">
+                                        <button class="apply theme-btn">Áp dụng</button>
+                                        <button class="preview theme-btn">Xem trước</button>
+                                    </div>
+                                    <div class="theme_check">
+                                        <i class="bi bi-check"></i>
+                                    </div>
+                                </figure>
+                          </div>
+                          <div class="theme_title">${display.name}</div>
+                </div>
+            `;
+      });
+    });
+  },
+  setConfig(key, value) {
+    this.config[key] = value;
+    localStorage.setItem(PLAYER_MUSIC_CLONE, JSON.stringify(this.config));
+  },
+
+  getConfig() {
+    this.isRandom = this.config["isRandom"];
+    this.isRepeat = this.config["isRepeat"];
+    this.isVolume = this.config["isVolme"];
+    randomBtn.classList.toggle("is-active", this.isRandom);
+    repeatBtn.classList.toggle("is-active", this.isRepeat);
+    volumeBtn.classList.toggle("is-active", this.isVolume);
+    this.currentIndex = this.config["currentIndex"] || 0;
+    this.mediaCount = this.config["primarySong"] || 0;
+    this.currentTheme = this.config["currentTheme"] || "";
+    this.currentBackground = this.config["currentBackground"] || 0;
+    this.indexTheme = this.config["indexTheme"] || 0;
+    this.currentVolume = this.config["currentVolume"] || 0;
+    this.trackTimeVolume = this.config["trackTimeVolume"] || 0;
+  },
+
   handleEvents: function () {
     // Tạo biến lưu giá trị khởi tạo của volume
     var oldVolume = volume.value;
     var volumeAtZero = false;
     const medias = Array.from($$(".media"));
-    medias[0].classList.add("primary");
+    medias[this.mediaCount].classList.add("primary");
     const _this = this;
     // Xử lý sự kiện nút readmore
     const zingReadmores = Array.from($$(".zing_topic_readmore"));
@@ -753,6 +821,9 @@ const app = {
         playBtn.classList.replace("bi-pause-circle", "bi-play-circle");
         medias[_this.currentIndex].classList.remove("playing");
       }
+      _this.mediaCount = _this.currentIndex;
+      _this.setConfig("primarySong", _this.mediaCount);
+      _this.setConfig("currentIndex", _this.currentIndex);
     };
 
     nextBtn.onclick = function (e) {
@@ -778,6 +849,9 @@ const app = {
       audio.play();
       playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
       progress.value = 0;
+      _this.mediaCount = _this.currentIndex;
+      _this.setConfig("primarySong", _this.mediaCount);
+      _this.setConfig("currentIndex", _this.currentIndex);
     };
 
     prevBtn.onclick = function (e) {
@@ -802,6 +876,9 @@ const app = {
       _this.isPlaying = true;
       audio.play();
       playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
+      _this.mediaCount = _this.currentIndex;
+      _this.setConfig("primarySong", _this.mediaCount);
+      _this.setConfig("currentIndex", _this.currentIndex);
     };
 
     audio.onplay = function (e) {
@@ -827,6 +904,8 @@ const app = {
     audio.onloadedmetadata = function () {
       _this.getDuration();
       _this.renderNextSong();
+      audio.volume = _this.currentVolume;
+      trackTimeVolume.style.width = _this.trackTimeVolume;
     };
 
     // Xử lý sự kiện tăng giảm volume
@@ -835,23 +914,30 @@ const app = {
       oldVolume = volume.value;
       trackTimeVolume.style.width = volume.value * 100 + "%";
 
-      if (volume.value >= 0.5) {
+      if (volume.value >= 0.5 || _this.currentVolume >= 0.5) {
         volumeBtn.classList.remove("fa-volume-low");
         volumeBtn.classList.remove("fa-volume-xmark");
         volumeBtn.classList.add("fa-volume-high");
         volumeAtZero = false;
-      } else if (volume.value > 0 && volume.value < 0.5) {
+      } else if (
+        (volume.value > 0 && volume.value < 0.5) ||
+        (_this.currentVolume > 0 && _this.currentVolume < 0.5)
+      ) {
         volumeBtn.classList.add("fa-volume-low");
         volumeBtn.classList.remove("fa-volume-high");
         volumeBtn.classList.remove("fa-volume-xmark");
         volumeAtZero = false;
-      } else if (volume.value == 0) {
+      } else if (volume.value === 0 && _this.currentVolume === 0) {
         volumeBtn.classList.remove("fa-volume-low");
         volumeBtn.classList.remove("fa-volume-high");
         volumeBtn.classList.add("fa-volume-xmark");
         _this.isVolume = true;
         volumeAtZero = true;
       }
+      _this.currentVolume = volume.value;
+      _this.trackTimeVolume = volume.value * 100 + "%";
+      _this.setConfig("trackTimeVolume", _this.trackTimeVolume);
+      _this.setConfig("currentVolume", _this.currentVolume);
     };
     // Xử lý sự kiện click nút volume
     volumeBtn.onclick = function () {
@@ -871,13 +957,17 @@ const app = {
         volumeBtn.classList.replace("fa-volume-high", "fa-volume-xmark");
         volume.value = 0;
         audio.volume = 0;
-        trackTimeVolume.style.width = volume.value * 100 + "%";
       } else {
         volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
         volume.value = oldVolume;
         audio.volume = volume.value;
-        trackTimeVolume.style.width = volume.value * 100 + "%";
       }
+      trackTimeVolume.style.width = volume.value * 100 + "%";
+      _this.trackTimeVolume = volume.value * 100 + "%";
+      _this.currentVolume = volume.value;
+      _this.setConfig("trackTimeVolume", _this.trackTimeVolume);
+      _this.setConfig("currentVolume", _this.currentVolume);
+      _this.setConfig("isVolume", _this.isVolume);
     };
 
     // Xử lý sự kiện seek progress
@@ -910,6 +1000,7 @@ const app = {
         repeatBtn.classList.remove("is-active");
         _this.renderNextSong();
       }
+      _this.setConfig("isRepeat", _this.isRepeat);
     };
 
     //Xử lý sự kiện click nút random
@@ -922,6 +1013,7 @@ const app = {
         randomBtn.classList.remove("is-active");
         _this.renderNextSong();
       }
+      _this.setConfig("isRandom", _this.isRandom);
     };
 
     // Xử lý sự kiện chọn bài hát theo ý
@@ -942,6 +1034,8 @@ const app = {
         audio.play();
         playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
         _this.isPlaying = true;
+        _this.mediaCount = _this.currentIndex;
+        _this.setConfig("primarySong", _this.mediaCount);
       }
     };
 
@@ -950,6 +1044,7 @@ const app = {
   },
 
   handleDom: function () {
+    const _this = this;
     const newSongList = document.querySelector(".zm_discover_chance_wrapper");
     const leftNewSongList = document.querySelector(
       ".zm_discover_chance_body .gallery_discover_prev"
@@ -991,14 +1086,16 @@ const app = {
     };
 
     //Xử lý sự kiện ở ô input
+    const headerSearch = document.querySelector(".header_search");
     const input_header = document.querySelector(".header_search_input");
     const search_header = input_header.parentElement;
     const search_history = document.querySelector(".header_search_history");
     const header_close = document.querySelector(".header_search_close_right");
 
     input_header.onclick = function () {
-      input_header.style.backgroundColor = "#34224f";
-      search_header.style.backgroundColor = "#34224f";
+      input_header.style.backgroundColor = `var(--primary-bg)`;
+      search_header.style.backgroundColor = `var(--primary-bg)`;
+      headerSearch.style.borderRadius = `20px 20px 0 0`;
       search_history.style.display = "block";
     };
 
@@ -1067,10 +1164,10 @@ const app = {
     };
 
     header_dropdown.onclick = function (e) {};
+    header_setting.onclick = function (e) {};
 
     header_setting.onclick = function () {
       isShowingInfomation = !isShowingInfomation;
-      // e.stopPropagation();
       if (isShowingInfomation) {
         header_dropdown.style.display = "block";
       } else {
@@ -1105,6 +1202,7 @@ const app = {
 
       if (!search_history.contains(e.target)) {
         search_history.style.display = "none";
+        headerSearch.style.borderRadius = `20px 20px 20px 20px`;
       }
 
       if (
@@ -1165,6 +1263,113 @@ const app = {
         countryMusics[index].classList.add("is-active");
       };
     });
+
+    // Theme
+    const closeModalBtn = $(".close_modal");
+    const modalTheme = $("#modal_theme_overlay");
+    const modalThemeContainer = $(".theme_modal");
+    const themePrev = $(".modal_theme_top");
+    const themePopup = $(".theme_popup");
+    const applyBtns = $$(".apply.theme-btn");
+    const previewBtns = $$(".preview.theme-btn");
+    const themeItems = [...$$(".theme_item")];
+    // let currentTheme = "dark";
+    // let currentBackground;
+    let isThemeActive = _this.indexTheme;
+    themeItems[isThemeActive].classList.add("is-active");
+
+    closeModalBtn.onclick = function (e) {
+      modalTheme.style.display = "none";
+    };
+
+    themePopup.onclick = function () {
+      modalTheme.style.display = "flex";
+    };
+
+    themePrev.onclick = function () {
+      modalTheme.style.display = "flex";
+    };
+
+    modalTheme.onclick = function () {
+      modalTheme.style.display = "none";
+    };
+
+    modalThemeContainer.onclick = function (e) {
+      e.stopPropagation();
+    };
+
+    function loadTheme(theme, background) {
+      main.style.backgroundImage = `url('${_this.currentBackground}')`;
+      document.documentElement.setAttribute("data-theme", _this.currentTheme);
+    }
+
+    loadTheme(_this.currentTheme, _this.currentBackground);
+
+    applyBtns.forEach((applyBtn) => {
+      applyBtn.onclick = function (e) {
+        const themeActive = $(".theme_item.is-active");
+        if (themeActive) {
+          themeActive.classList.remove("is-active");
+        }
+        const themeItem = e.target.closest(".theme_item");
+        if (themeItem) {
+          //  Xử lý hiển thị khung theme (index)
+          themeItem.classList.add("is-active");
+          const newThemePosition = themeItems.findIndex(
+            (theme) => theme === themeItem
+          );
+          //
+          const themeColor = themeItem.dataset.theme;
+          document.documentElement.setAttribute("data-theme", themeColor);
+          const themeBackground = themeItem.getAttribute("background") || "";
+          if (themeBackground) {
+            main.style.backgroundImage = `url('${themeBackground}')`;
+            _this.currentBackground = themeBackground;
+          }
+          isThemeActive = newThemePosition;
+          _this.indexTheme = newThemePosition;
+          _this.currentTheme = themeColor;
+          closeModalBtn.click();
+          renderMiniTheme();
+          _this.setConfig("indexTheme", _this.indexTheme);
+          _this.setConfig("currentTheme", _this.currentTheme);
+          _this.setConfig("currentBackground", _this.currentBackground);
+          // return { currentTheme, currentBackground, isThemeActive };
+        }
+      };
+    });
+
+    previewBtns.forEach((previewBtn) => {
+      previewBtn.onclick = function (e) {
+        const themeItem = e.target.closest(".theme_item");
+        if (themeItem) {
+          const themeColor = themeItem.dataset.theme;
+          document.documentElement.setAttribute("data-theme", themeColor);
+          const themeBackground = themeItem.getAttribute("background");
+          if (themeBackground) {
+            main.style.backgroundImage = `url('${themeBackground}')`;
+          }
+        }
+      };
+      closeModalBtn.onclick = function (e) {
+        document.documentElement.setAttribute("data-theme", _this.currentTheme);
+        main.style.backgroundImage = `url('${_this.currentBackground}')`;
+        modalTheme.style.display = "none";
+      };
+      modalTheme.onclick = function () {
+        document.documentElement.setAttribute("data-theme", _this.currentTheme);
+        main.style.backgroundImage = `url('${_this.currentBackground}')`;
+        modalTheme.style.display = "none";
+      };
+    });
+    const miniTheme = $(".theme_thumb");
+    const miniNameTheme = $(".theme_name");
+    function renderMiniTheme() {
+      miniTheme.src = themeItems[isThemeActive].querySelector(".theme_img").src;
+      miniNameTheme.innerHTML =
+        themeItems[isThemeActive].querySelector(".theme_title").textContent;
+    }
+    renderMiniTheme();
   },
 
   // Xuất giao diện trình phát nhạc
@@ -1180,10 +1385,12 @@ const app = {
     this.renderNewPlaylist();
     this.renderFavPlaylist();
     this.renderPartner();
+    this.renderTheme();
   },
 
   start: function () {
     this.render();
+    this.getConfig();
     this.handleEvents();
     this.handleDom();
   },

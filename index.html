@@ -138,13 +138,8 @@
                     </div>
                 </nav>
 
-                <!-- <div class="zm_navbar_login">
-                    <span>Đăng nhập để khám phá playlist dành riêng cho bạn</span>
-                    <button><span>Đăng Nhập</span></button>
-                </div> -->
 
                 <div class="zm_navbar_playlist">
-                    <!-- <button> -->
                     <i>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -156,17 +151,14 @@
                         </svg>
                     </i>
                     <span>Tạo playlist mới</span>
-                    <!-- </button> -->
                 </div>
             </div>
         </div>
         <div class="sidebar_right">
             <div id="zm_header">
                 <div class="zm_header_left">
-                    <i class="ti-arrow-left header_arrow"></i>
-                    <!-- <i class="fa-solid fa-arrow-left"></i> -->
-                    <i class="ti-arrow-right header_arrow"></i>
-                    <!-- <i class="fa-solid fa-arrow-right"></i> -->
+                    <i class="ti-arrow-left header_arrow btn--disable"></i>
+                    <i class="ti-arrow-right header_arrow btn--disable"></i>
                     <div class="header_search">
                         <i class="ti-search"></i>
                         <!-- <i class="fa-solid fa-magnifying-glass ti-search"></i> -->
@@ -247,6 +239,7 @@
                                                 <span class="header_dropdown_class">plus</span>
                                             </div>
 
+
                                             <div class="header_dropdown_transfer">
                                                 <span>Chuyển bài mượt mà (Cross fade)</span>
                                                 <div class="dropdown_transfer_smooth">
@@ -309,7 +302,7 @@
                                     </div>
                                     <!--  -->
                                 </li>
-                                <li class="header_dropdown_item">
+                                <li class="header_dropdown_item play_theme">
                                     <div class="header_dropdown_item_left">
                                         <i class="fa-solid fa-brush"></i>
                                         <span class="header_dropdown_function">Giao diện</span>
@@ -317,6 +310,33 @@
                                     <div class="header_dropdown_item_right">
                                         <i class="fa-solid fa-chevron-right"></i>
                                     </div>
+
+                                    <!-- 
+                                    -->
+                                    <div id="modal_header_theme">
+                                        <div class="header_dropdown_theme">
+                                            <div class="flex-container theme_popup">
+                                                <span class="header_theme title">Chủ đề</span>
+                                                <i class="fa-solid fa-chevron-right"></i>
+                                            </div>
+                                            <div class="modal_theme_top">
+                                                <img src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/purple.jpg"
+                                                    alt="" width="100px" height="70px" class="theme_thumb">
+                                                <span class="theme_name"> Tím</span>
+                                            </div>
+                                            <div class="divided_theme"></div>
+                                            <div class="flex-container">
+                                                <span class="transition_effect">Hiệu ứng chuyển động</span>
+                                                <div class="dropdown_transfer_smooth">
+                                                    <input type="checkbox" name="" id="transfer10"
+                                                        class="transfer-checkbox">
+                                                    <label for="transfer10" class="transfer_smooth"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </li>
                                 <li class="header_dropdown_item">
                                     <div class="header_dropdown_item_left">
@@ -390,12 +410,7 @@
                                         </svg>
                                     </div>
                                 </li>
-                                <!-- <li class="header_dropdown_item">
-                                    <div class="header_dropdown_item_left">
-                                        <span class="header_dropdown_function"></span>
-                                    </div>
-                                    <div class="header_dropdown_item_right"></div>
-                                </li> -->
+
                             </ul>
                             <div class="header_dropdown_devide"></div>
                         </div>
@@ -1278,8 +1293,54 @@
                 <audio src="" id="audio"></audio>
             </div>
         </div>
-    </div>
+        <!--  -->
+        <div id="modal_theme_overlay">
+            <!-- Lớp phủ overlay -->
+            <div class="theme_modal">
+                <!-- Hiển thị / ẩn theme modal  -->
+                <div class="flex-container theme_modal_category">
+                    <h3 class="theme_category">Giao Diện</h3>
+                    <i class="bi bi-x-lg close_modal"></i>
+                </div>
+                <div class="theme_modal_container">
 
+                    <h3 class="theme_type">
+                    </h3>
+                    <div class="theme_wrapper">
+                        <!--  -->
+                        <!-- <div class="theme_item">
+                            <div class="theme_header">
+                                <figure>
+                                    <img src="./assest/image/theme/pic1.png" alt="" class="theme_img">
+                                    <div class="overlay">
+                                        <button class="apply theme-btn">
+                                            Áp dụng
+                                        </button>
+                                        <button class="preview theme-btn">Xem trước</button>
+                                    </div>
+                                    <div class="theme_check">
+                                        <i class="bi bi-check"></i>
+                                    </div>
+                                </figure>
+                            </div>
+                            <div class="theme_title">London</div>
+                        </div> -->
+                        <!--  -->
+                    </div>
+                    <!--  -->
+                    <h3 class="theme_type"></h3>
+                    <div class="theme_wrapper"></div>
+                    <h3 class="theme_type"></h3>
+                    <div class="theme_wrapper"></div>
+                    <h3 class="theme_type"></h3>
+                    <div class="theme_wrapper"></div>
+                    <h3 class="theme_type"></h3>
+                    <div class="theme_wrapper"></div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+    </div>
     <!-- <script src="script.js"></script> -->
     <script src="./data/top100.js"></script>
     <script src="./data/renderRank.js"></script>
@@ -1287,6 +1348,7 @@
     <script src="./data/radios.js"></script>
     <script src="./data/discover.js"></script>
     <script src="./data/partner.js"></script>
+    <script src="./data/theme.js"></script>
     <script src="app.js"></script>
 </body>
 
