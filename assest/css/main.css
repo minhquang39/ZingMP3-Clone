@@ -378,3 +378,7 @@ body ::-webkit-scrollbar-thumb {
 .bi-three-dots {
     color: #fff;
 }
+
+.player-icon {
+    color: var(--player-text);
+}

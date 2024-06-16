@@ -65,7 +65,7 @@
                                         fill="#currentColor" fill-opacity="0.8"></path>
                                 </svg>
                                 <span>#zingchart</span>
-                                <i class="fa-regular fa-circle-play navbar_play_icon"></i>
+                                <i class="bi bi-play-circle navbar_play_icon"></i>
                             </a>
                         </li>
                         <li class="zm_navbar_item">
@@ -80,7 +80,7 @@
                                     <img src="https://zjs.zmdcdn.me/zmp3-desktop/dev/147506/static/media/live-tag.e25dd240.svg"
                                         alt="">
                                 </figure>
-                                <i class="fa-regular fa-circle-play navbar_play_icon"></i>
+                                <i class="bi bi-play-circle navbar_play_icon"></i>
                             </a>
                         </li>
 
@@ -98,7 +98,7 @@
                                         fill-opacity="0.8"></path>
                                 </svg>
                                 <span>BXH Nhạc Mới</span>
-                                <i class="fa-regular fa-circle-play navbar_play_icon"></i>
+                                <i class="bi bi-play-circle navbar_play_icon"></i>
                             </a>
                         </li>
                         <li class="zm_navbar_item">
@@ -229,7 +229,7 @@
                                         <span class="header_dropdown_function">Trình phát nhạc</span>
                                     </div>
                                     <div class="header_dropdown_item_right">
-                                        <i class="fa-solid fa-chevron-right"></i>
+                                        <i class="bi bi-chevron-right"></i>
                                     </div>
                                     <!--  -->
                                     <div id="modal_header_music">
@@ -270,22 +270,20 @@
                                             <ul class="header_dropdown_quality">
                                                 <span class="header_dropdown_quality_class">Chất lượng nhạc</span>
                                                 <li class="header_dropdown_quality_item">
-                                                    <label for="quality1">Thường (128 kbps)</label>
                                                     <input type="radio" name="quality" id="quality1" checked>
+                                                    <label for="quality1">Thường (128 kbps)</label>
                                                 </li>
                                                 <li class="header_dropdown_quality_item">
-                                                    <label for="quality2">Cao (320 kbps)
-                                                    </label>
                                                     <input type="radio" name="quality" id="quality2">
+                                                    <label for="quality2">Cao (320 kbps)</label>
                                                 </li>
                                                 <li class="header_dropdown_quality_item">
+                                                    <input type="radio" name="quality" id="quality3">
                                                     <label for="quality3">Lossless</label>
                                                     <span class="header_dropdown_class dropdown_quality">plus</span>
-
-                                                    <input type="radio" name="quality" id="quality3">
                                                 </li>
-
                                             </ul>
+
 
                                             <div class="header_dropdown_divided"></div>
                                             <span class="header_dropdown_play">Phát nhạc</span>
@@ -308,7 +306,7 @@
                                         <span class="header_dropdown_function">Giao diện</span>
                                     </div>
                                     <div class="header_dropdown_item_right">
-                                        <i class="fa-solid fa-chevron-right"></i>
+                                        <i class="bi bi-chevron-right"></i>
                                     </div>
 
                                     <!-- 
@@ -317,7 +315,7 @@
                                         <div class="header_dropdown_theme">
                                             <div class="flex-container theme_popup">
                                                 <span class="header_theme title">Chủ đề</span>
-                                                <i class="fa-solid fa-chevron-right"></i>
+                                                <i class="bi bi-chevron-right"></i>
                                             </div>
                                             <div class="modal_theme_top">
                                                 <img src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/purple.jpg"
@@ -723,7 +721,7 @@
                                                 <i class="fa-solid fa-chevron-left"></i>
                                             </div>
                                             <div class="radio_move_btn">
-                                                <i class="fa-solid fa-chevron-right"></i>
+                                                <i class="bi bi-chevron-right"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -736,7 +734,7 @@
                                         <i class="fa-solid fa-chevron-left"></i>
                                     </button>
                                     <button class="zm_control zm_radio_right ">
-                                        <i class="fa-solid fa-chevron-right"></i>
+                                        <i class="bi bi-chevron-right"></i>
                                     </button>
                                     <div class="radio_main row no-wrap">
 
@@ -780,7 +778,7 @@
                                                 <i class="fa-solid fa-chevron-left"></i>
                                             </div>
                                             <div class="radio_move_btn">
-                                                <i class="fa-solid fa-chevron-right"></i>
+                                                <i class="bi bi-chevron-right"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -793,7 +791,7 @@
                                         <i class="fa-solid fa-chevron-left"></i>
                                     </button>
                                     <button class="zm_control zm_radio_right ">
-                                        <i class="fa-solid fa-chevron-right"></i>
+                                        <i class="bi bi-chevron-right"></i>
                                     </button>
                                     <div class="radio_main row no-wrap">
 
@@ -1164,7 +1162,7 @@
 
                             <div class="sub_menu_item">
                                 <div class="has_sub_menu">
-                                    <i class="bi bi-heart love_sym"></i>
+                                    <i class="bi bi-heart love_sym player-icon"></i>
                                 </div>
                                 <div class="sub_menu">
                                     Thêm vào thư viện
@@ -1173,7 +1171,7 @@
 
                             <div class="sub_menu_item">
                                 <div class="has_sub_menu">
-                                    <i class="bi bi-three-dots"></i>
+                                    <i class="bi bi-three-dots player-icon other-options    "></i>
                                 </div>
                                 <div class="sub_menu other">Xem thêm</div>
                             </div>
@@ -1272,7 +1270,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="level-item player_volume ">
+                    <div class="level-item play_volume ">
                         <input id="volume" type="range" value="1" step="0.1" min="0" max="1">
                         <div class=" player_volume">
                             <div class=" track_time_volume"></div>
@@ -1340,6 +1338,19 @@
             </div>
         </div>
         <!--  -->
+        <div id="toast">
+            <!-- <div class="toast_notification">
+                <div class="toast_body">
+                    <div class="toast_left">
+                        <i class="bi bi-check-circle-fill toast_icon"></i>
+                        <span class="toast_info">Chức năng đang được hoàn thiện</span>
+                    </div>
+                    <div class="toast_right">
+                        <i class="bi bi-x-lg toast_close"></i>
+                    </div>
+                </div>
+            </div> -->
+        </div>
     </div>
     <!-- <script src="script.js"></script> -->
     <script src="./data/top100.js"></script>

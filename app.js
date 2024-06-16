@@ -94,6 +94,7 @@ const app = {
   indexTheme: 0,
   currentVolume: 0,
   trackTimeVolume: 0,
+  isShowingInfomation: false,
   // PLAYER_MUSIC_CLONE: "ZINGMP3_CLONE",
   newSongs: JSON.parse(localStorage.getItem(RANK_STORAGE)),
   top100s: JSON.parse(localStorage.getItem(top100_STORAGE)),
@@ -176,7 +177,7 @@ const app = {
                                       </div>
                                       <div class="sub_menu_item">
                                           <div class="has_sub_menu">
-                                              <i class="bi bi-three-dots"></i>
+                                              <i class="bi bi-three-dots other-options"></i>
                                           </div>
                                           <div class="sub_menu other">Khác</div>
                                       </div>
@@ -217,7 +218,7 @@ const app = {
                                             </div>
                                             <div class="sub_menu_item">
                                                 <div class="has_sub_menu">
-                                                    <i class="bi bi-three-dots"></i>
+                                                    <i class="bi bi-three-dots other-options"></i>
                                                 </div>
                                                 <div class="sub_menu other">Khác</div>
                                             </div>
@@ -339,7 +340,7 @@ const app = {
                                             </div>
                                             <div class="sub_menu_item">
                                                 <div class="has_sub_menu">
-                                                    <i class="bi bi-three-dots"></i>
+                                                    <i class="bi bi-three-dots other-options"></i>
                                                 </div>
                                                 <div class="sub_menu other">Khác</div>
                                             </div>
@@ -465,7 +466,7 @@ const app = {
                                             <div class="media_right">
                                                 <div class="sub_menu_item">
                                                     <div class="has_sub_menu">
-                                                        <i class="bi bi-three-dots discover-option"></i>
+                                                        <i class="bi bi-three-dots other-options discover-option"></i>
                                                     </div>
                                                     <div class="sub_menu other">Khác</div>
                                                 </div>
@@ -514,7 +515,7 @@ const app = {
                                             </div>
                                             <div class="sub_menu_item">
                                                 <div class="has_sub_menu">
-                                                    <i class="bi bi-three-dots"></i>
+                                                    <i class="bi bi-three-dots other-options"></i>
                                                 </div>
                                                 <div class="sub_menu other">Khác</div>
                                             </div>
@@ -619,7 +620,7 @@ const app = {
                                             </div>
                                             <div class="sub_menu_item">
                                                 <div class="has_sub_menu">
-                                                    <i class="bi bi-three-dots"></i>
+                                                    <i class="bi bi-three-dots other-options"></i>
                                                 </div>
                                                 <div class="sub_menu other">Khác</div>
                                             </div>
@@ -755,21 +756,37 @@ const app = {
   },
 
   getConfig() {
+    // Assuming this.config is already populated from localStorage
     this.isRandom = this.config["isRandom"];
     this.isRepeat = this.config["isRepeat"];
-    this.isVolume = this.config["isVolme"];
+    this.isVolume = this.config["isVolume"];
+
     randomBtn.classList.toggle("is-active", this.isRandom);
     repeatBtn.classList.toggle("is-active", this.isRepeat);
     volumeBtn.classList.toggle("is-active", this.isVolume);
+
     this.currentIndex = this.config["currentIndex"] || 0;
     this.mediaCount = this.config["primarySong"] || 0;
     this.currentTheme = this.config["currentTheme"] || "";
     this.currentBackground = this.config["currentBackground"] || 0;
     this.indexTheme = this.config["indexTheme"] || 0;
-    this.currentVolume = this.config["currentVolume"] || 0;
-    this.trackTimeVolume = this.config["trackTimeVolume"] || 0;
-  },
+    this.currentVolume = parseFloat(this.config["currentVolume"]) || 0; // Convert to number
+    this.trackTimeVolume = this.config["trackTimeVolume"] || "0%";
 
+    if (this.isVolume && this.currentVolume === 0) {
+      volumeBtn.classList.remove("fa-volume-low");
+      volumeBtn.classList.remove("fa-volume-high");
+      volumeBtn.classList.add("fa-volume-xmark");
+    } else {
+      // Optionally handle other states
+      volumeBtn.classList.remove("fa-volume-xmark");
+      if (this.currentVolume > 0.5) {
+        volumeBtn.classList.add("fa-volume-high");
+      } else {
+        volumeBtn.classList.add("fa-volume-low");
+      }
+    }
+  },
   handleEvents: function () {
     // Tạo biến lưu giá trị khởi tạo của volume
     var oldVolume = volume.value;
@@ -842,14 +859,14 @@ const app = {
           _this.currentIndex = 0;
         }
       }
-      medias[_this.currentIndex].classList.add("playing", "primary");
+      _this.mediaCount = _this.currentIndex;
+      medias[_this.mediaCount].classList.add("playing", "primary");
 
       _this.renderCurrentSong();
       _this.isPlaying = true;
       audio.play();
       playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
       progress.value = 0;
-      _this.mediaCount = _this.currentIndex;
       _this.setConfig("primarySong", _this.mediaCount);
       _this.setConfig("currentIndex", _this.currentIndex);
     };
@@ -870,13 +887,13 @@ const app = {
           _this.currentIndex = _this.songs.length - 1;
         }
       }
-      medias[_this.currentIndex].classList.add("playing", "primary");
-
       _this.renderCurrentSong();
       _this.isPlaying = true;
       audio.play();
       playBtn.classList.replace("bi-play-circle", "bi-pause-circle");
+
       _this.mediaCount = _this.currentIndex;
+      medias[_this.mediaCount].classList.add("playing", "primary");
       _this.setConfig("primarySong", _this.mediaCount);
       _this.setConfig("currentIndex", _this.currentIndex);
     };
@@ -914,25 +931,22 @@ const app = {
       oldVolume = volume.value;
       trackTimeVolume.style.width = volume.value * 100 + "%";
 
-      if (volume.value >= 0.5 || _this.currentVolume >= 0.5) {
+      if (volume.value >= 0.5) {
         volumeBtn.classList.remove("fa-volume-low");
         volumeBtn.classList.remove("fa-volume-xmark");
         volumeBtn.classList.add("fa-volume-high");
         volumeAtZero = false;
-      } else if (
-        (volume.value > 0 && volume.value < 0.5) ||
-        (_this.currentVolume > 0 && _this.currentVolume < 0.5)
-      ) {
+      } else if (volume.value > 0 && volume.value < 0.5) {
         volumeBtn.classList.add("fa-volume-low");
         volumeBtn.classList.remove("fa-volume-high");
         volumeBtn.classList.remove("fa-volume-xmark");
         volumeAtZero = false;
-      } else if (volume.value === 0 && _this.currentVolume === 0) {
+      } else if (volume.value == 0) {
         volumeBtn.classList.remove("fa-volume-low");
         volumeBtn.classList.remove("fa-volume-high");
         volumeBtn.classList.add("fa-volume-xmark");
-        _this.isVolume = true;
         volumeAtZero = true;
+        _this.isVolume = true;
       }
       _this.currentVolume = volume.value;
       _this.trackTimeVolume = volume.value * 100 + "%";
@@ -941,8 +955,6 @@ const app = {
     };
     // Xử lý sự kiện click nút volume
     volumeBtn.onclick = function () {
-      // _this.isVolume = !_this.isVolume;
-
       if (volumeAtZero) {
         volume.value = 1;
         audio.volume = 1;
@@ -1036,6 +1048,7 @@ const app = {
         _this.isPlaying = true;
         _this.mediaCount = _this.currentIndex;
         _this.setConfig("primarySong", _this.mediaCount);
+        _this.setConfig("currentIndex", _this.currentIndex);
       }
     };
 
@@ -1093,8 +1106,10 @@ const app = {
     const header_close = document.querySelector(".header_search_close_right");
 
     input_header.onclick = function () {
-      input_header.style.backgroundColor = `var(--primary-bg)`;
       search_header.style.backgroundColor = `var(--primary-bg)`;
+      // input_header.style.backgroundColor = `var(--primary-bg)`;
+      headerSearch.style.background = `var(--primary-bg)`;
+      headerSearch.style.boxShadow = "0 1px 5px 1px rgba(0, 0, 0, .2)";
       headerSearch.style.borderRadius = `20px 20px 0 0`;
       search_history.style.display = "block";
     };
@@ -1114,24 +1129,19 @@ const app = {
       header_close.style.display = "none";
     };
 
-    var isShowingInfomation = false;
-
     // Xử lý sự kiện khi click vào biểu tượng người dùng
     const account = document.querySelector(".header_account");
     const account_infomation = document.querySelector(
       ".header_account_infomation"
     );
     account.onclick = function (e) {
-      isShowingInfomation = !isShowingInfomation;
-      if (isShowingInfomation) {
+      e.stopPropagation();
+      _this.isShowingInfomation = !_this.isShowingInfomation;
+      if (_this.isShowingInfomation) {
         account_infomation.style.display = "block";
       } else {
         account_infomation.style.display = "none";
       }
-    };
-
-    account_infomation.onclick = function (e) {
-      e.stopPropagation();
     };
 
     search_header.onclick = function (e) {
@@ -1163,21 +1173,20 @@ const app = {
       header_seemore.style.display = "none";
     };
 
-    header_dropdown.onclick = function (e) {};
-    header_setting.onclick = function (e) {};
+    header_dropdown.onclick = function (e) {
+      e.stopPropagation();
+    };
 
-    header_setting.onclick = function () {
-      isShowingInfomation = !isShowingInfomation;
-      if (isShowingInfomation) {
+    header_setting.onclick = function (e) {
+      e.stopPropagation();
+      _this.isShowingInfomation = !_this.isShowingInfomation;
+      if (_this.isShowingInfomation) {
         header_dropdown.style.display = "block";
       } else {
         header_dropdown.style.display = "none";
       }
     };
 
-    header_setting_icon.onclick = function (e) {
-      // e.stopPropagation();
-    };
     // Xử lý ẩn hiện music player
     const music_select = document.querySelector(
       ".header_dropdown_item.play_music"
@@ -1197,20 +1206,25 @@ const app = {
         !account_infomation.contains(e.target)
       ) {
         account_infomation.style.display = "none";
-        isShowingInfomation = false; // Đặt lại biến khi ẩn thông tin
+        _this.isShowingInfomation = false; // Đặt lại biến khi ẩn thông tin
       }
 
       if (!search_history.contains(e.target)) {
         search_history.style.display = "none";
         headerSearch.style.borderRadius = `20px 20px 20px 20px`;
+        headerSearch.style.boxShadow = "";
+        headerSearch.style.background = `var(--alpha-bg)`;
+        // input_header.style.backgroundColor = `var(--alpha-bg)`;
       }
 
       if (
-        !header_dropdown.contains(e.target) &&
-        !header_setting.contains(e.target) &&
-        !header_setting_icon.contains(e.target)
+        !header_dropdown.contains(e.target) ||
+        header_setting.contains(e.target)
+        // !header_dropdown.contains(e.target) &&
+        // !header_setting.contains(e.target)
       ) {
         header_dropdown.style.display = "none";
+        _this.isShowingInfomation = false; // Đặt lại biến khi ẩn thông tin
       }
     };
 
@@ -1370,6 +1384,70 @@ const app = {
         themeItems[isThemeActive].querySelector(".theme_title").textContent;
     }
     renderMiniTheme();
+
+    // Toast
+    const toastWrapper = $("#toast");
+    const loveIcons = [...$$(".love_sym")];
+    const options = [...$$(".other-options")];
+    const plays = [...$$(".playlist_play")];
+    loveIcons.forEach((loveIcon) => {
+      loveIcon.onclick = function (e) {
+        showToast();
+      };
+    });
+    options.forEach((option) => {
+      option.onclick = function (e) {
+        showToast();
+      };
+    });
+    plays.forEach((play) => {
+      play.onclick = function (e) {
+        showToast();
+      };
+    });
+    function showToast() {
+      const existToast = $(".toast_notification");
+      if (existToast && existToast.parentNode === toastWrapper) {
+        toastWrapper.removeChild(existToast);
+      }
+
+      const toast = document.createElement("div");
+      toast.classList.add("toast_notification");
+      toast.innerHTML = `
+    <div class="toast_body">
+      <div class="toast_left">
+        <i class="bi bi-check-circle-fill toast_icon"></i>
+        <span class="toast_info">Chức năng đang được hoàn thiện</span>
+      </div>
+      <div class="toast_right">
+        <i class="bi bi-x-lg toast_close"></i>
+      </div>
+    </div>
+  `;
+      toastWrapper.appendChild(toast);
+      const clearToast = setTimeout(function () {
+        toastWrapper.removeChild(toast);
+      }, 3000);
+      toast.onclick = function (e) {
+        if (e.target.closest(".toast_close")) {
+          toastWrapper.removeChild(toast);
+          clearTimeout(clearToast);
+        }
+      };
+    }
+
+    //
+
+    const slides = [...$$(".explore-item")];
+
+    const firstSlide = $(".explore-item.first");
+    const secondSlide = $(".explore-item.second");
+    const thirdSlide = $(".explore-item.third");
+    function autoSlide() {}
+
+    // Gọi hàm autoSlide mỗi 3 giây
+    setInterval(autoSlide, 3000);
+    //
   },
 
   // Xuất giao diện trình phát nhạc
@@ -1397,6 +1475,3 @@ const app = {
 };
 
 app.start();
-
-// const newSongList = $(".zm_discover_chance_wrapper");
-// console.log(newSongList.firstElementChild.clientWidth);
